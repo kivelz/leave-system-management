@@ -1,26 +1,27 @@
 package com.leave.system.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
+	private int id;
+	private String name;
 	private String userid;
 	private String password;
 	private String email;
 	private int managerid;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="ROLE_ID")
 	private Role role;
 	
@@ -29,8 +30,9 @@ public class Employee {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Employee(String userid, String password, String email, int managerid, Role role) {
+	public Employee(String name, String userid, String password, String email, int managerid, Role role) {
 		super();
+		this.name = name;
 		this.userid = userid;
 		this.password = password;
 		this.email = email;
@@ -38,20 +40,32 @@ public class Employee {
 		this.role = role;
 	}
 
-
-
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -124,36 +138,10 @@ public class Employee {
 		this.role = role;
 	}
 
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Employee other = (Employee) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	@Override
 	public String toString() {
-		return "Employee [" + (id != null ? "id=" + id + ", " : "") + (userid != null ? "userid=" + userid + ", " : "")
+		return "Employee [id=" + id + ", " + (name != null ? "name=" + name + ", " : "")
+				+ (userid != null ? "userid=" + userid + ", " : "")
 				+ (password != null ? "password=" + password + ", " : "")
 				+ (email != null ? "email=" + email + ", " : "") + "managerid=" + managerid + ", "
 				+ (role != null ? "role=" + role : "") + "]";

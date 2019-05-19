@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <title>Products</title>
+        <th:block th:include="layout/header"></th:block>
+
+<div class="container">
+    <div th:if="${not #lists.isEmpty(employees)}">
+        <h2>All Products</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>User ID</th>
+                <th>Roles</th>
+                <th>Manger Id</th>
+            </tr>
+            <tr th:each="employee : ${employees}">
+            
+				<td th:text=${employee.id}></td>            
+                <td th:text="${employee.name}">Name</td>
+                <td th:text="${employee.email}">Email</td>
+                <td th:text=${employee.userid}>UserID</td>
+                <td th:text=${employee.role}></td>
+                <td th:text="${employee.managerid}"></td>
+                
+            
+            </tr>
+        </table>
+    </div>
+</div>
+    <th:block th:include="layout/footer"></th:block>
