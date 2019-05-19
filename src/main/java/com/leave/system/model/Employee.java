@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 public class Employee {
 
@@ -22,9 +21,9 @@ public class Employee {
 	private String email;
 	private int managerid;
 	@ManyToOne
-	@JoinColumn(name="ROLE_ID")
+	@JoinColumn(name = "ROLE_ID")
 	private Role role;
-	
+
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -139,6 +138,31 @@ public class Employee {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", " + (name != null ? "name=" + name + ", " : "")
 				+ (userid != null ? "userid=" + userid + ", " : "")
@@ -147,7 +171,4 @@ public class Employee {
 				+ (role != null ? "role=" + role : "") + "]";
 	}
 
-	
-
-	
 }

@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<title>Products</title>
+<th:block th:include="layout/header"></th:block>
+
+
+
+<div class="container">
+	<!-- start of container -->
+	<h1>Add a new employee</h1>
+	<div>
+
+		<form class="form-horizontal" th:object="${employee}"
+			th:action="@{/employees}" method="POST">
+			<fieldset>
+				Name: <input type="text" th:field="*{name}">
+			</fieldset>
+			<fieldset>
+				Email: <input type="email" th:field="*{email}">
+			</fieldset>
+			<fieldset>
+				User ID: <input type="text" th:field="*{userid}">
+			</fieldset>
+			<fieldset>
+				Password: <input type="password" th:field="*{password}">
+			</fieldset>
+			<fieldset>
+				Manager ID: <input type="number" th:field="*{managerid}">
+			</fieldset>
+			<fieldset>
+				Employee roles: <select th:field="*{role}">
+					<option th:each="role : ${roles}" th:value="${role.id}"
+						th:text="${role.title}"></option>
+				</select>
+			</fieldset>
+			<fieldset>
+				Manager to assign: <select th:field="*{managerid}">
+					<option th:each="emp : ${empWithRole}" th:value="${emp.id}"
+						th:text="${emp.name}"></option>
+				</select>
+			</fieldset>
+			
+
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+
+
+	</div>
+
+</div>
+<!-- end of container -->
+
+</body>
+</html>
