@@ -25,9 +25,6 @@
 				Password: <input type="password" th:field="*{password}">
 			</fieldset>
 			<fieldset>
-				Manager ID: <input type="number" th:field="*{managerid}">
-			</fieldset>
-			<fieldset>
 				Employee roles: <select th:field="*{role}">
 					<option th:each="role : ${roles}" th:value="${role.id}"
 						th:text="${role.title}"></option>
