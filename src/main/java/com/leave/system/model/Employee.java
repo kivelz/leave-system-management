@@ -6,6 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,9 +21,17 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
 	private String id;
+	
+	@NotEmpty
+	@Size(min = 3, max = 100)
 	private String name;
+	
 	private String userid;
+	@NotEmpty
+	@Size(min = 6, max = 30)
 	private String password;
+	@NotEmpty
+	@Email
 	private String email;
 	private String managerid;
 	@ManyToOne

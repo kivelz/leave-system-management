@@ -1,14 +1,16 @@
 package com.leave.system.controller;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,19 +44,19 @@ public class AdminController {
 	// get method for viewing all employee
 	@RequestMapping(path = "/employees", method = RequestMethod.GET)
 	public String viewEmployee(Model model) {
-		List<Employee> employees= employeeRepository.findAll();
-		Map<String, Employee>employeesManagers = new HashMap<String, Employee>();
+		List<Employee> employees = employeeRepository.findAll();
+		Map<String, Employee> employeesManagers = new HashMap<String, Employee>();
 		for (Employee employee : employees) {
-			
-			Optional<Employee>value = employeeRepository.findById(employee.getManagerid());
+
+			Optional<Employee> value = employeeRepository.findById(employee.getManagerid());
 //			System.out.println( value.get());
-			if(value.isPresent()  && value.get().getId()!=null) {
+			if (value.isPresent() && value.get().getId() != null) {
 				employeesManagers.put(employee.getManagerid(), value.get());
-				System.out.println(">>>>>>>>>>>>>>>> Name : "+value.get().getName());
-				
+//				System.out.println("Name : "+value.get().getName());
+
 			}
 		}
-		
+
 		model.addAttribute("employees", employees);
 		model.addAttribute("employeesManagers", employeesManagers);
 		return "employees";
@@ -69,19 +71,23 @@ public class AdminController {
 		model.addAttribute("employee", new Employee());
 		model.addAttribute("roles", rRepo.findAll());
 		model.addAttribute("empWithRole", list);
-
 		return "addemployee";
 	}
 
 	// post method for saving employee
 	@RequestMapping(path = "/employees", method = RequestMethod.POST)
-	public String saveEmployee(Employee employee) {
-		employeeRepository.save(employee);
-		return "redirect:/employees";
+	public String saveEmployee(@Valid Employee employee, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "addemployee";
+		} else {
+			employeeRepository.save(employee);
+			return "redirect:/employees";
+		}
+		
 	}
 
 	@RequestMapping(path = "/employees/update/{id}", method = RequestMethod.GET)
-	public String editEmployee(Model model, @PathVariable(name =  "id")String id) {		
+	public String editEmployee(Model model, @PathVariable(name = "id") String id) {
 		Role roleToFindRole = new Role();
 		roleToFindRole.setId(1);
 		List<Employee> list = employeeRepository.findByRole(roleToFindRole);
@@ -91,7 +97,7 @@ public class AdminController {
 		model.addAttribute("empWithRole", list);
 		return "editemployee";
 	}
-	
+
 	@RequestMapping(path = "/employees/delete/{id}", method = RequestMethod.GET)
 	public String deleteEmployee(@PathVariable(name = "id") String id) {
 		employeeRepository.delete(employeeRepository.findById(id).orElse(null));

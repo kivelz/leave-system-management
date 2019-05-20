@@ -1,54 +1,62 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<title>Add Employee</title>
+<head lang="en">
+<title>All Employee</title>
 <th:block th:include="layout/header"></th:block>
-
-
+</head>
 
 <div class="container">
 	<!-- start of container -->
 	<h1>Add a new employee</h1>
 	<div>
 
-		<form class="form-horizontal" th:object="${employee}"
+		<form class="form-horizontal needs-validation" novalidate th:object="${employee}"
 			th:action="@{/employees}" method="POST">
 			<div class="form-group">
-					<div class="col-sm-10">
-						<input type="hidden" class="form-control" th:field="*{id}" />
-					</div>
+				<div class="col-sm-10">
+					<input type="hidden" class="form-control" th:field="*{id}" />
 				</div>
-			
-			<fieldset class="form-group col-md-4">
-			<label for="name">Name : </label>
-			<input class ="form-control" type = "text" id="name" th:field="*{name}"/>
+			</div>
+
+			<fieldset class="col-md-4">
+				<label for="name">Name: </label> <input class="form-control"
+					type="text" id="name" th:field="*{name}" required />
+				<div class="valid-feedback">Valid.</div>
+				<div class="invalid-feedback">Name must consist a minium of 3 letters</div>
 			</fieldset>
-			
+
 			<fieldset class="form-group col-md-4">
-			<label for="email">Email : </label>
-			<input class="form-control" type="email" th:field="*{email}">
+				<label for="email">Email : </label> <input class="form-control"
+					type="email" th:field="*{email}" required>
+					<div class="valid-feedback">Valid.</div>
+				<div class="invalid-feedback">Email must have a @. Please check your Input</div>
 			</fieldset>
-			
+
 			<fieldset class="form-group col-md-4">
-			<label for="userid">User Id</label>
-			<input class="form-control" type="text" id="userid" th:field="*{userid}">
+				<label for="userid">User Id</label> <input class="form-control"
+					type="text" id="userid" th:field="*{userid}" required>
+					<div class="valid-feedback">Valid.</div>
+				<div class="invalid-feedback">Userid must const a min of 6 characters.</div>
 			</fieldset>
-			
+
 			<fieldset class="form-group col-md-4">
-			<label for="password">Password: </label>
-			<input class="form-control" type="password" id="password" th:field="*{password}">
+				<label for="password">Password: </label> <input class="form-control"
+					type="password" id="password" th:field="*{password}" required>
+					<div class="valid-feedback">Valid.</div>
+				<div class="invalid-feedback">Password cannot be blank</div>
 			</fieldset>
-			
+
 			<fieldset class="form-group col-md-4">
-			<label for="role">Employee role : </label>
-			<select th:field="*{role}">
-			<option th:each="role : ${roles}" th:value="${role.id}"
-			th:text="${role.title}"></option>
-			</select>
+				<label for="role">Employee role : </label> <select
+					th:field="*{role}">
+					<option th:each="role : ${roles}" th:value="${role.id}"
+						th:text="${role.title}"></option>
+				</select>
 			</fieldset>
-			
+
 			<fieldset class="form-group col-md-4">
-			<label for="assignmanager">Assign Manager</label>
-				Manager to assign: <select th:field="*{managerid}">
+				<label for="assignmanager">Assign Manager</label> Manager to assign:
+				<select th:field="*{managerid}">
 					<option th:each="emp : ${empWithRole}" th:value="${emp.id}"
 						th:text="${emp.name}"></option>
 				</select>
@@ -62,5 +70,26 @@
 
 </div>
 <!-- end of container -->
+<script>
+// Disable form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Get the forms we want to add validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
 
-<th:block th:include="layout/footer"></th:block>
+</body>
+</html>

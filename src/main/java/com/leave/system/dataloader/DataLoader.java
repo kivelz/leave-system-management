@@ -40,14 +40,13 @@
 //		entities.add(role3);
 //		rolerepo.saveAll(entities);
 //
-//		Employee emp1 = new Employee("Tan ah tan", "Test1", "DJHSDHJKH", "KEWKE@dssd.com", 2, role);
-//		Employee emp2 = new Employee("tony tan", "Test2", "dhsjhdaksjhdh", "test2@test.com", 2, role1);
-//		Employee emp3 = new Employee("Alfred yeoh", "Test3", "dhsjhdaksjhdh", "test3@test.com", 2, role1);
-//		Employee emp4 = new Employee("Esther tan", "Test4", "dhsjhdaksjhdh", "test2@test.com", 1, role1);
-//		Employee emp5 = new Employee("Yuen kwan", "Test5", "dhsjhdaksjhdh", "test2@test.com", 2, role1);
-//		Employee emp6 = new Employee("Cher wah", "Test10", "dhsjhdaksjhdh", "test2@test.com", 2, role1);
-//		Employee emp7 = new Employee("Kwan ge", "Test5", "dhsjhdaksjhdh", "test2@test.com", 2, role1);
-//
+//		Employee emp1 =  new Employee("Apa Yuan Kwan", "KH2011", "DKSLJDKJDD", "ayk@u.nus.edu", "9c12f827-9b1c-4b6c-9669-7a2b6f460a70", role1);
+//		Employee emp2 =  new Employee("Nani Yuan Kwan", "KH2012", "DKSLJDKJDD", "nyk@u.nus.edu", null, role1);
+//		Employee emp3 =  new Employee("Sapa Yuan Kwan", "KH2013", "DKSLJDKJDD", "syk@u.nus.edu", "9c12f827-9b1c-4b6c-9669-7a2b6f460a70", role1);
+//		Employee emp4 =  new Employee("Awas Yuan Kwan", "KH2014", "DKSLJDKJDD", "cyk@u.nus.edu", "9c12f827-9b1c-4b6c-9669-7a2b6f460a70", role1);
+//		Employee emp5 =  new Employee("Goh Yuan Kwan", "KH2015", "DKSLJDKJDD", "ayk@u.nus.edu", "9c12f827-9b1c-4b6c-9669-7a2b6f460a70", role1);
+//		Employee emp6 =  new Employee("Esther Tan", "KH2017", "DKSLJDKJDD", "etank@u.nus.edu", null, role1);
+//		
 //		List<Employee> elist = new ArrayList<>();
 //		elist.add(emp1);
 //		elist.add(emp2);
@@ -55,7 +54,6 @@
 //		elist.add(emp4);
 //		elist.add(emp5);
 //		elist.add(emp6);
-//		elist.add(emp7);
 //		employeeRepository.saveAll(elist);
 //
 //	}
