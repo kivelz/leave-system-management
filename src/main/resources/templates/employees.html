@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<title>Products</title>
+<head lang="en">
+<title>Edit Product Details</title>
 <th:block th:include="layout/header"></th:block>
+</head>
 
 <div class="container">
 	<div th:if="${not #lists.isEmpty(employees)}">
@@ -23,6 +25,7 @@
 				<td th:text=${employee.userid}>UserID</td>
 				<td th:text=*{employee.role.title}></td>
 				<td th:text="${employee.managerid}"></td>
+				<td><a th:href="${'/employees/update/' + employee.id}" class="btn btn-primary">Edit</a></td>
 		</table>
 	</div>
 </div>

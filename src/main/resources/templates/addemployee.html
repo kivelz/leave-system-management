@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<title>Products</title>
+<title>Add Employee</title>
 <th:block th:include="layout/header"></th:block>
 
 
@@ -12,25 +12,36 @@
 
 		<form class="form-horizontal" th:object="${employee}"
 			th:action="@{/employees}" method="POST">
-			<fieldset>
-				Name: <input type="text" th:field="*{name}">
+			<fieldset class="form-group col-md-4">
+			<label for="name">Name : </label>
+			<input class ="form-control" type = "text" id="name" th:field="*{name}"/>
 			</fieldset>
-			<fieldset>
-				Email: <input type="email" th:field="*{email}">
+			
+			<fieldset class="form-group col-md-4">
+			<label for="email">Email : </label>
+			<input class="form-control" type="email" th:field="*{email}">
 			</fieldset>
-			<fieldset>
-				User ID: <input type="text" th:field="*{userid}">
+			
+			<fieldset class="form-group col-md-4">
+			<label for="userid">User Id</label>
+			<input class="form-control" type="text" id="userid" th:field="*{userid}">
 			</fieldset>
-			<fieldset>
-				Password: <input type="password" th:field="*{password}">
+			
+			<fieldset class="form-group col-md-4">
+			<label for="password">Password: </label>
+			<input class="form-control" type="password" id="password" th:field="*{password}">
 			</fieldset>
-			<fieldset>
-				Employee roles: <select th:field="*{role}">
-					<option th:each="role : ${roles}" th:value="${role.id}"
-						th:text="${role.title}"></option>
-				</select>
+			
+			<fieldset class="form-group col-md-4">
+			<label for="role">Employee role : </label>
+			<select th:field="*{role}">
+			<option th:each="role : ${roles}" th:value="${role.id}"
+			th:text="${role.title}"></option>
+			</select>
 			</fieldset>
-			<fieldset>
+			
+			<fieldset class="form-group col-md-4">
+			<label for="assignmanager">Assign Manager</label>
 				Manager to assign: <select th:field="*{managerid}">
 					<option th:each="emp : ${empWithRole}" th:value="${emp.id}"
 						th:text="${emp.name}"></option>
@@ -48,5 +59,4 @@
 </div>
 <!-- end of container -->
 
-</body>
-</html>
+<th:block th:include="layout/footer"></th:block>

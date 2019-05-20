@@ -21,7 +21,7 @@ public class Role {
 	private String title;
 	private int annualleave;
 	private int medicalleave;
-	@OneToMany(targetEntity = Employee.class, mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Employee.class, mappedBy = "role")
 	private Collection<Employee> employee;
 
 	public Role() {

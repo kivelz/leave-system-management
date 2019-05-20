@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<title>Add Employee</title>
+<th:block th:include="layout/header"></th:block>
+
+
+<div class="container">
+
+	<h1>Edit Employee</h1>
+	<form class="form-horizontal" th:object="${employee}"
+		th:action="@{/employees}" method="POST">
+
+	<div class="form-group">
+					<div class="col-sm-10">
+						<input type="hidden" class="form-control" th:field="*{id}" />
+					</div>
+				</div>
+		<fieldset class="form-group col-md-4">
+			<label for="name">Name :</label> <input class="form-control"
+				type="text" id="name" th:field=*{name}>
+		</fieldset>
+
+		<fieldset class="form-group col-md-4">
+			<label for="email">Email :</label> <input class="form-control"
+				type="email" id="email" th:field=*{email}>
+		</fieldset>
+
+		<fieldset class="form-group col-md-4">
+			<label for="password">Password :</label> <input class="form-control"
+				type="text" id="password" th:field=*{password}>
+		</fieldset>
+		
+		<fieldset class="form-group col-md-4">
+			<label for="userid">User ID :</label> <input class="form-control"
+				type="text" id="userid" th:field=*{userid}>
+		</fieldset>
+			
+			<fieldset class="form-group col-md-4">
+				<label for="manager">manager :</label> <input class="form-control"
+					type="number" id="manager" th:field=*{managerid}>
+			</fieldset>
+			
+			<fieldset class="form-group col-md-4">
+			<label for="role">Employee role : </label>
+			<select th:field="*{role.id}">
+			<option th:each="role : ${roles}" th:value="${role.id}"
+			th:text="${role.title}"></option>
+			</select>
+			</fieldset>
+			
+			<button class="btn btn-primary">Update</button>
+	</form>
+</div>
+<!-- end of container -->
+
+<th:block th:include="layout/footer"></th:block>
