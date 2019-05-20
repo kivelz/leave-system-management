@@ -12,6 +12,12 @@
 
 		<form class="form-horizontal" th:object="${employee}"
 			th:action="@{/employees}" method="POST">
+			<div class="form-group">
+					<div class="col-sm-10">
+						<input type="hidden" class="form-control" th:field="*{id}" />
+					</div>
+				</div>
+			
 			<fieldset class="form-group col-md-4">
 			<label for="name">Name : </label>
 			<input class ="form-control" type = "text" id="name" th:field="*{name}"/>
@@ -47,8 +53,6 @@
 						th:text="${emp.name}"></option>
 				</select>
 			</fieldset>
-			
-
 
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>

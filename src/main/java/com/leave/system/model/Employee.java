@@ -1,6 +1,5 @@
 package com.leave.system.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +15,12 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "id", updatable = false, nullable = false)
 	private String id;
 	private String name;
 	private String userid;
 	private String password;
 	private String email;
-	private int managerid;
+	private String managerid;
 	@ManyToOne
 	@JoinColumn(name = "ROLE_ID")
 	private Role role;
@@ -35,7 +32,7 @@ public class Employee {
 
 
 
-	public Employee(String name, String userid, String password, String email, int managerid, Role role) {
+	public Employee(String name, String userid, String password, String email, String managerid, Role role) {
 		super();
 		this.name = name;
 		this.userid = userid;
@@ -120,14 +117,14 @@ public class Employee {
 	/**
 	 * @return the managerid
 	 */
-	public int getManagerid() {
+	public String getManagerid() {
 		return managerid;
 	}
 
 	/**
 	 * @param managerid the managerid to set
 	 */
-	public void setManagerid(int managerid) {
+	public void setManagerid(String managerid) {
 		this.managerid = managerid;
 	}
 
@@ -148,6 +145,35 @@ public class Employee {
 
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+
+
+	@Override
 	public String toString() {
 		return "Employee [" + (id != null ? "id=" + id + ", " : "") + (name != null ? "name=" + name + ", " : "")
 				+ (userid != null ? "userid=" + userid + ", " : "")
@@ -155,6 +181,9 @@ public class Employee {
 				+ (email != null ? "email=" + email + ", " : "") + "managerid=" + managerid + ", "
 				+ (role != null ? "role=" + role : "") + "]";
 	}
+
+
+
 
 	
 

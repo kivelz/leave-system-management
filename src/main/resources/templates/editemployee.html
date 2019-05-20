@@ -1,7 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<title>Add Employee</title>
+<title>Edit Employee</title>
 <th:block th:include="layout/header"></th:block>
+
 
 
 <div class="container">
@@ -36,16 +37,19 @@
 		</fieldset>
 			
 			<fieldset class="form-group col-md-4">
-				<label for="manager">manager :</label> <input class="form-control"
-					type="number" id="manager" th:field=*{managerid}>
-			</fieldset>
-			
-			<fieldset class="form-group col-md-4">
 			<label for="role">Employee role : </label>
 			<select th:field="*{role.id}">
 			<option th:each="role : ${roles}" th:value="${role.id}"
 			th:text="${role.title}"></option>
 			</select>
+			</fieldset>
+			
+			<fieldset class="form-group col-md-4">
+			<label for="assignmanager">Assign Manager</label>
+				Manager to assign: <select th:field="*{managerid}">
+					<option th:each="emp : ${empWithRole}" th:value="${emp.id}"
+						th:text="${emp.name}"></option>
+				</select>
 			</fieldset>
 			
 			<button class="btn btn-primary">Update</button>
