@@ -12,33 +12,38 @@
 
 		<form class="form-horizontal" th:object="${employee}"
 			th:action="@{/employees}" method="POST">
+			
+			
 			<div class="form-group">
-				<div class="col-sm-10">
+				<div class="col-md-4">
 					<input type="hidden" class="form-control" th:field="*{id}" />
 				</div>
 			</div>
 
 			<fieldset class="col-md-4">
 				<label for="name">Name: </label> <input 
-					type="text" id="name" th:field="*{name}"/>
-				 <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+					class="form-control" type="text" id="name" th:field="*{name}"/>
+				 <p style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
 			</fieldset>
 
 			<fieldset class="form-group col-md-4">
 				<label for="email">Email : </label> <input class="form-control"
 					type="email" th:field="*{email}">
+					<p style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">invalid email</p>
 				
 			</fieldset>
 
 			<fieldset class="form-group col-md-4">
 				<label for="userid">User Id</label> <input class="form-control"
 					type="text" id="userid" th:field="*{userid}" >
+					<p style="color:red" th:if="${#fields.hasErrors('userid')}" th:errors="*{userid}">Name Error</p>
 			
 			</fieldset>
 
 			<fieldset class="form-group col-md-4">
 				<label for="password">Password: </label> <input class="form-control"
 					type="password" id="password" th:field="*{password}">
+					<p style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</p>
 		
 			</fieldset>
 

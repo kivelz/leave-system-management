@@ -19,8 +19,14 @@ public class EmployeeValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		Employee employee = (Employee) obj;
-		if(employee.getEmail().length() > 50) {
-			errors.reject("name", "name");
+		if(employee.getName().length() < 6) {
+			errors.rejectValue("name", "name");
+		}
+		else if(employee.getUserid().length() < 6) {
+			errors.rejectValue("userid", "userid");
+		}
+		else if(employee.getPassword().length() < 6) {
+			errors.rejectValue("password", "password");
 		}
 		
 	}
