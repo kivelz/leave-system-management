@@ -39,21 +39,7 @@
 		</table>
 	</div>
 	<br> <br>
-	<table class="table table-striped">
-		<tr>
-			<th>Id</th>
-			<th>Title</th>
-			<th>Annual Leave</th>
-			<th>Medical Leave</th>
-		</tr>
-		<tr th:each="role : ${roles}">
-			<td th:text="${role.id}"></td>
-			<td th:text="${role.title}"></td>
-			<td th:text="${role.annualleave}"></td>
-			<td th:text="${role.medicalleave}"></td>
-
-		</tr>
-	</table>
+	
 </div>
 
 </body>

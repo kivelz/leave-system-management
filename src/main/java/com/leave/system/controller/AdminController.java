@@ -24,6 +24,7 @@ import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.RoleRepository;
 import com.leave.system.validator.EmployeeValidator;
 
+
 @Controller
 public class AdminController {
 
@@ -118,7 +119,7 @@ public class AdminController {
 		employeeRepository.delete(employeeRepository.findById(id).orElse(null));
 		return "redirect:/employees";
 	}
-	
+
 
 
 }
