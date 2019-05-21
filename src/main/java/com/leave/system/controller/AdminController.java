@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.RoleRepository;
 import com.leave.system.validator.EmployeeValidator;
+
+import antlr.TokenStreamRetryException;
 
 
 @Controller
@@ -84,18 +87,23 @@ public class AdminController {
 
 	// post method for saving employee
 	@RequestMapping(path = "/employees", method = RequestMethod.POST)
-	public String saveEmployee(@Validated Employee employee, BindingResult bindingResult, Model model) {
+	public String saveEmployee(@Validated Employee employee, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 		Role roleToFindRole = new Role();
 		List<Role> roles = rRepo.findAll();
-		roleToFindRole.setId(1);
-		
+		roleToFindRole.setId(1);	
 		List<Employee> list = employeeRepository.findByRole(roleToFindRole);	
+		redirectAttributes.addFlashAttribute("message", "Failed");
+	    redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		 
 		if (bindingResult.hasErrors()) {	
+			
 			model.addAttribute("employee", employee);
 			model.addAttribute("empWithRole", list);
 			model.addAttribute("roles", roles);
 			return "addemployee";
 		}
+		redirectAttributes.addFlashAttribute("message", "Successfully added employee");
+	    redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 		employeeRepository.save(employee);
 		return "redirect:/employees";
 

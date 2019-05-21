@@ -5,7 +5,10 @@
 <th:block th:include="layout/header"></th:block>
 </head>
 
+<div id="successMessage" th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" style="text-align: center" /></div>
 <div class="container">
+
 	<!-- start of container -->
 	<h1>Add a new employee</h1>
 	<div>
@@ -71,6 +74,12 @@
 
 </div>
 <!-- end of container -->
-
+<script>
+$(document).ready(function(){
+	setTimeout(function() {
+	    $('#successMessage').fadeOut('fast');
+	}, 30000); // <-- time in milliseconds
+});
+</script>
 </body>
 </html>

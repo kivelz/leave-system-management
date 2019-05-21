@@ -6,7 +6,8 @@
 </head>
 
 <div th:if="${message}" th:text="${message}"
-	th:class="${'alert ' + alertClass}" style="text-align: center" /></div>
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
 <div class="container">
 	<div th:if="${not #lists.isEmpty(employees)}">
 		<h2>All Employee</h2>
@@ -19,7 +20,7 @@
 				<th>Manger name</th>
 				<th>Modify</th>
 			</tr>
-			<tr th:each="employee, iter : ${employees}">
+			<tr th:each="employee : ${employees}">
 
 				<td th:text="${employee.name}">Name</td>
 				<td th:text="${employee.email}">Email</td>
@@ -39,8 +40,8 @@
 		</table>
 	</div>
 	<br> <br>
-	
-</div>
 
+</div>
+</script>
 </body>
 </html>
