@@ -21,8 +21,8 @@ public class Role {
 	private String title;
 	private int annualleave;
 	private int medicalleave;
-	@OneToMany(targetEntity = Employee.class, mappedBy = "role")
-	private Collection<Employee> employee;
+//	@OneToMany(targetEntity = Employee.class, mappedBy = "role")
+//	private Collection<Employee> employee;
 
 	public Role() {
 		super();
@@ -95,23 +95,31 @@ public class Role {
 	/**
 	 * @return the employee
 	 */
-	public Collection<Employee> getEmployee() {
-		return employee;
-	}
+//	public Collection<Employee> getEmployee() {
+//		return employee;
+//	}
+//
+//	/**
+//	 * @param employee the employee to set
+//	 */
+//	public void setEmployee(Collection<Employee> employee) {
+//		this.employee = employee;
+//	}
 
-	/**
-	 * @param employee the employee to set
-	 */
-	public void setEmployee(Collection<Employee> employee) {
-		this.employee = employee;
-	}
+	
+//	@Override
+//	public String toString() {
+//		return "Role [id=" + id + ", " + (title != null ? "title=" + title + ", " : "") + "annualleave=" + annualleave
+//				+ ", medicalleave=" + medicalleave + ", " + (employee != null ? "employee=" + employee : "") + "]";
+//	}
 
 	@Override
 	public String toString() {
 		return "Role [id=" + id + ", " + (title != null ? "title=" + title + ", " : "") + "annualleave=" + annualleave
-				+ ", medicalleave=" + medicalleave + ", " + (employee != null ? "employee=" + employee : "") + "]";
+				+ ", medicalleave=" + medicalleave +"]";
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

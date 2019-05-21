@@ -8,5 +8,5 @@ import com.leave.system.model.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer>{
 
-
+	
 }

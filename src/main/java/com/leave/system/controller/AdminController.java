@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -19,6 +23,7 @@ import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.RoleRepository;
+import com.leave.system.validator.EmployeeValidator;
 
 @Controller
 public class AdminController {
@@ -34,6 +39,11 @@ public class AdminController {
 	@Autowired
 	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
 		this.employeeRepository = employeeRepository;
+	}
+
+	@InitBinder
+	protected void InitBinder(WebDataBinder binder) {
+		binder.addValidators(new EmployeeValidator());
 	}
 
 	@RequestMapping(path = "/")
@@ -53,7 +63,6 @@ public class AdminController {
 			if (value.isPresent() && value.get().getId() != null) {
 				employeesManagers.put(employee.getManagerid(), value.get());
 //				System.out.println("Name : "+value.get().getName());
-
 			}
 		}
 
@@ -76,14 +85,21 @@ public class AdminController {
 
 	// post method for saving employee
 	@RequestMapping(path = "/employees", method = RequestMethod.POST)
-	public String saveEmployee(@Valid Employee employee, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) {
-			return "addemployee";
-		} else {
-			employeeRepository.save(employee);
-			return "redirect:/employees";
-		}
+	public String saveEmployee(@Valid Employee employee, BindingResult bindingResult, Model model) {
+		Role roleToFindRole = new Role();
+		List<Role> roles = rRepo.findAll();
+		roleToFindRole.setId(1);
 		
+		List<Employee> list = employeeRepository.findByRole(roleToFindRole);	
+		if (bindingResult.hasErrors()) {	
+			model.addAttribute("employee", employee);
+			model.addAttribute("empWithRole", list);
+			model.addAttribute("roles", roles);
+			return "addemployee";
+		}
+		employeeRepository.save(employee);
+		return "redirect:/employees";
+
 	}
 
 	@RequestMapping(path = "/employees/update/{id}", method = RequestMethod.GET)

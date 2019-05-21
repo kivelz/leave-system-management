@@ -23,7 +23,7 @@ public class Employee {
 	private String id;
 	
 	@NotEmpty
-	@Size(min = 3, max = 100)
+	@Size(min = 3, max = 10)
 	private String name;
 	
 	private String userid;
