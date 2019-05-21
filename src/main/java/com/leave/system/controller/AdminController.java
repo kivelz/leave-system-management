@@ -56,7 +56,6 @@ public class AdminController {
 		List<Employee> employees = employeeRepository.findAll();
 		Map<String, Employee> employeesManagers = new HashMap<String, Employee>();
 		for (Employee employee : employees) {
-
 			Optional<Employee> value = employeeRepository.findById(employee.getManagerid());
 //			System.out.println( value.get());
 			if (value.isPresent() && value.get().getId() != null) {
@@ -64,7 +63,7 @@ public class AdminController {
 //				System.out.println("Name : "+value.get().getName());
 			}
 		}
-
+		model.addAttribute("roles", rRepo.findAll());
 		model.addAttribute("employees", employees);
 		model.addAttribute("employeesManagers", employeesManagers);
 		return "employees";
@@ -100,7 +99,7 @@ public class AdminController {
 		return "redirect:/employees";
 
 	}
-
+	//update employee get method
 	@RequestMapping(path = "/employees/update/{id}", method = RequestMethod.GET)
 	public String editEmployee(Model model, @PathVariable(name = "id") String id) {
 		Role roleToFindRole = new Role();
@@ -113,10 +112,13 @@ public class AdminController {
 		return "editemployee";
 	}
 
+	//delete employee
 	@RequestMapping(path = "/employees/delete/{id}", method = RequestMethod.GET)
 	public String deleteEmployee(@PathVariable(name = "id") String id) {
 		employeeRepository.delete(employeeRepository.findById(id).orElse(null));
 		return "redirect:/employees";
 	}
+	
+
 
 }

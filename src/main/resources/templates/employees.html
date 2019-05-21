@@ -5,17 +5,19 @@
 <th:block th:include="layout/header"></th:block>
 </head>
 
-<div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" style="text-align: center"/></div>
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" style="text-align: center" /></div>
 <div class="container">
 	<div th:if="${not #lists.isEmpty(employees)}">
-		<h2>Employee</h2>
+		<h2>All Employee</h2>
 		<table class="table table-striped">
 			<tr>
 				<th>Name</th>
 				<th>Email</th>
 				<th>User ID</th>
 				<th>Roles</th>
-				<th>Manger Id</th>
+				<th>Manger name</th>
+				<th>Modify</th>
 			</tr>
 			<tr th:each="employee, iter : ${employees}">
 
@@ -28,13 +30,30 @@
 					th:text="${employeesManagers['__${employee.managerid}__'].name}">Nothing
 					here</td>
 				<td
-					th:unless="${#maps.containsKey(employeesManagers, '__${employee.managerid}__')}">Not assigned</td>
+					th:unless="${#maps.containsKey(employeesManagers, '__${employee.managerid}__')}">Not
+					assigned</td>
 				<td><a th:href="${'/employees/update/' + employee.id}"
 					class="btn btn-primary">Edit</a> <a
 					th:href="${'/employees/delete/' + employee.id}"
 					class="btn btn-danger">Delete</a></td>
 		</table>
 	</div>
+	<br> <br>
+	<table class="table table-striped">
+		<tr>
+			<th>Id</th>
+			<th>Title</th>
+			<th>Annual Leave</th>
+			<th>Medical Leave</th>
+		</tr>
+		<tr th:each="role : ${roles}">
+			<td th:text="${role.id}"></td>
+			<td th:text="${role.title}"></td>
+			<td th:text="${role.annualleave}"></td>
+			<td th:text="${role.medicalleave}"></td>
+
+		</tr>
+	</table>
 </div>
 
 </body>
