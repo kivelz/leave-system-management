@@ -14,20 +14,14 @@ import org.hibernate.annotations.GenericGenerator;
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
-	private String id;
-	
-	
+	  @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	private String name;
-	@Column(unique = true)
 	private String userid;
-
-
 	private String password;
 	@Email
 	String email;
-	private String managerid;
+	private Integer managerid;
 	@ManyToOne
 	@JoinColumn(name = "ROLE_ID")
 	private Role role;
@@ -39,7 +33,7 @@ public class Employee {
 
 
 
-	public Employee(String name, String userid, String password, String email, String managerid, Role role) {
+	public Employee(String name, String userid, String password, String email, Integer managerid, Role role) {
 		super();
 		this.name = name;
 		this.userid = userid;
@@ -54,14 +48,14 @@ public class Employee {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -124,14 +118,14 @@ public class Employee {
 	/**
 	 * @return the managerid
 	 */
-	public String getManagerid() {
+	public Integer getManagerid() {
 		return managerid;
 	}
 
 	/**
 	 * @param managerid the managerid to set
 	 */
-	public void setManagerid(String managerid) {
+	public void setManagerid(Integer managerid) {
 		this.managerid = managerid;
 	}
 
@@ -155,7 +149,7 @@ public class Employee {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -170,10 +164,7 @@ public class Employee {
 		if (getClass() != obj.getClass())
 			return false;
 		Employee other = (Employee) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
@@ -182,17 +173,14 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee [" + (id != null ? "id=" + id + ", " : "") + (name != null ? "name=" + name + ", " : "")
+		return "Employee [id=" + id + ", " + (name != null ? "name=" + name + ", " : "")
 				+ (userid != null ? "userid=" + userid + ", " : "")
 				+ (password != null ? "password=" + password + ", " : "")
-				+ (email != null ? "email=" + email + ", " : "") + "managerid=" + managerid + ", "
-				+ (role != null ? "role=" + role : "") + "]";
+				+ (email != null ? "email=" + email + ", " : "")
+				+ (managerid != null ? "managerid=" + managerid + ", " : "") + (role != null ? "role=" + role : "")
+				+ "]";
 	}
 
-
-
-
-	
 
 
 

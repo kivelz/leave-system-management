@@ -10,7 +10,7 @@ import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, String> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 //	Optional<Employee> findById(String id);
 	List<Employee> findByRole(Role role);
 	Employee findByuserid(String userid);

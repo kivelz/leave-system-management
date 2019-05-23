@@ -7,6 +7,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,13 +58,13 @@ public class AdminController {
 	@RequestMapping(path = "/employees", method = RequestMethod.GET)
 	public String viewEmployee(Model model) {
 		List<Employee> employees = employeeRepository.findAll();
-		Map<String, Employee> employeesManagers = new HashMap<String, Employee>();
+		Map<Integer, Employee> employeesManagers = new HashMap<Integer, Employee>();
 		for (Employee employee : employees) {
 			Optional<Employee> value = employeeRepository.findById(employee.getManagerid());
 //			System.out.println( value.get());
-			if (value.isPresent() && value.get().getId() != null) {
+			if (value.isPresent() && value.get() != null) {
 				employeesManagers.put(employee.getManagerid(), value.get());
-//				System.out.println("Name : "+value.get().getName());
+				System.out.println("Name : "+value.get().getName());
 			}
 		}
 		model.addAttribute("roles", rRepo.findAll());
@@ -120,7 +121,7 @@ public class AdminController {
 	}
 	//update employee get method
 	@RequestMapping(path = "/employees/update/{id}", method = RequestMethod.GET)
-	public String editEmployee(Model model, @PathVariable(name = "id") String id) {
+	public String editEmployee(Model model, @PathVariable(name = "id") Integer id) {
 		Role roleToFindRole = new Role();
 		roleToFindRole.setId(1);
 		List<Employee> list = employeeRepository.findByRole(roleToFindRole);
@@ -133,7 +134,7 @@ public class AdminController {
 
 	//delete employee
 	@RequestMapping(path = "/employees/delete/{id}", method = RequestMethod.GET)
-	public String deleteEmployee(@PathVariable(name = "id") String id) {
+	public String deleteEmployee(@PathVariable(name = "id") Integer id) {
 		employeeRepository.delete(employeeRepository.findById(id).orElse(null));
 		return "redirect:/employees";
 	}

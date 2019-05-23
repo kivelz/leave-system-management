@@ -13,6 +13,7 @@
 		<h2>All Employee</h2>
 		<table class="table table-striped">
 			<tr>
+				<th>Id</th>
 				<th>Name</th>
 				<th>Email</th>
 				<th>User ID</th>
@@ -21,17 +22,17 @@
 				<th>Modify</th>
 			</tr>
 			<tr th:each="employee : ${employees}">
-
+				<td th:text="${employee.id}"></td>
 				<td th:text="${employee.name}">Name</td>
 				<td th:text="${employee.email}">Email</td>
 				<td th:text=${employee.userid}>UserID</td>
 				<td th:text=*{employee.role.title}></td>
 				<td
-					th:if="${#maps.containsKey(employeesManagers, '__${employee.managerid}__')}"
-					th:text="${employeesManagers['__${employee.managerid}__'].name}">Nothing
+					th:if="${#maps.containsKey(employeesManagers, __${employee.managerid}__)}"
+					th:text="${employeesManagers[__${employee.managerid}__].name}">Nothing
 					here</td>
 				<td
-					th:unless="${#maps.containsKey(employeesManagers, '__${employee.managerid}__')}">Not
+					th:unless="${#maps.containsKey(employeesManagers, __${employee.managerid}__)}">Not
 					assigned</td>
 				<td><a th:href="${'/employees/update/' + employee.id}"
 					class="btn btn-primary">Edit</a>
