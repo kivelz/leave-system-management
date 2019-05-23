@@ -31,8 +31,6 @@ public class Employee {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
 	public Employee(String name, String userid, String password, String email, Integer managerid, Role role) {
 		super();
 		this.name = name;
@@ -42,8 +40,6 @@ public class Employee {
 		this.managerid = managerid;
 		this.role = role;
 	}
-
-
 
 	/**
 	 * @return the id

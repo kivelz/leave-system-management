@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container mt-5">
+
+		<h1>Edit Employee</h1>
+		<form class="form-horizontal" th:object="${employee}"
+			th:action="@{/authenticate}" method="POST">
+
+			<div class="form-group">
+				<div class="col-sm-10">
+					<input type="hidden" class="form-control" th:field="*{id}" />
+				</div>
+			</div>
+			<fieldset class="form-group col-md-4">
+				<label for="name">Name :</label> <input class="form-control"
+					type="text" id="name" th:field=*{name}>
+			</fieldset>
+
+			<fieldset class="form-group col-md-4">
+				<label for="password">Password :</label> <input class="form-control"
+					type="text" id="password" th:field=*{password}>
+			</fieldset>
+
+			<button class="btn btn-primary">Update</button>
+		</form>
+	</div>
+</body>
+</html>
