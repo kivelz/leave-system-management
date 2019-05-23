@@ -1,5 +1,6 @@
 package com.leave.system.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,7 @@ public class Employee {
 	
 	
 	private String name;
-
+	@Column(unique = true)
 	private String userid;
 
 

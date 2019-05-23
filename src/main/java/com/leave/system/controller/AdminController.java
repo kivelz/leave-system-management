@@ -25,7 +25,6 @@ import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.RoleRepository;
 import com.leave.system.validator.EmployeeValidator;
 
-import antlr.TokenStreamRetryException;
 
 
 @Controller
@@ -91,10 +90,19 @@ public class AdminController {
 		Role roleToFindRole = new Role();
 		List<Role> roles = rRepo.findAll();
 		roleToFindRole.setId(1);	
+		
+		//cant use security at the moment. using salt is better than hash.
+//		String salt = BCrypt.gensalt(12);
 		List<Employee> list = employeeRepository.findByRole(roleToFindRole);	
-		redirectAttributes.addFlashAttribute("message", "Failed");
+		Employee emp = employeeRepository.findByuserid(employee.getUserid());
+		redirectAttributes.addFlashAttribute("message", "Failed to add employee");
 	    redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		 
+	    if(emp != null)  {
+	    	bindingResult
+            .rejectValue("userid", "error.user", "There is already a employee registered with the username provided");
+}
+	    	
 		if (bindingResult.hasErrors()) {	
 			
 			model.addAttribute("employee", employee);
@@ -104,6 +112,8 @@ public class AdminController {
 		}
 		redirectAttributes.addFlashAttribute("message", "Successfully added employee");
 	    redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+	    //to be implemented once login feature is done
+//	    employee.setPassword(BCrypt.hashpw(employee.getPassword(), salt));
 		employeeRepository.save(employee);
 		return "redirect:/employees";
 
