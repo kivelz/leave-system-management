@@ -1,6 +1,8 @@
 package com.leave.system.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
@@ -14,8 +16,16 @@ public interface AdminServiceIF {
 
 	Employee authenticate(String name, String password);
 	
-	boolean createEmployee(Employee employee);
+	boolean createEmployee(Employee employee);	
 	
-	Employee findById(Integer id);
+	List<Employee> findAll();
+
+	Optional<Employee> findEmployeeId(Integer managerid);
+	
+	Optional<Employee> findById(Integer id);
+
+	Employee findByuserid(String userid);
+	
+	
 
 }

@@ -34,7 +34,7 @@
 				<td
 					th:unless="${#maps.containsKey(employeesManagers, __${employee.managerid}__)}">Not
 					assigned</td>
-				<td><a th:href="${'/employees/update/' + employee.id}"
+				<td><a th:href="${'update/' + employee.id}"
 					class="btn btn-primary">Edit</a>
 					<button type="button" class="btn btn-danger" data-toggle="modal"
 						data-target="#modal-warning"
