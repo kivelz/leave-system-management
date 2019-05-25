@@ -86,7 +86,13 @@ Welcome back Admin: <strong><span th:if="${username}" th:text="${username}"></sp
 </div>
 </div>
 </div> <!-- end -->
-
+<script>
+ $(document).ready(function(){
+      setTimeout(function() {
+         $('#successMessage').fadeOut('slow');
+         }, 2000); // <-- time in milliseconds
+ });
+ </script>
 
 
 </body>
