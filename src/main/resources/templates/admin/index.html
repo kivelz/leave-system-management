@@ -5,7 +5,11 @@
 <th:block th:include="layout/header"></th:block>
 </head>
 
+
 <div class="container mt-5"><!-- start of container -->
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
 <div class="row">
 <div class="col-md-3">
  <p class ="lead">Admin Menu</p>
@@ -18,9 +22,6 @@
             </div>
 </div>
 <div class="col">
-<div th:if="${message}" th:text="${message}"
-	th:class="${'alert ' + alertClass}" id="successMessage"
-	style="text-align: center" /></div>
 	<div th:if="${not #lists.isEmpty(employees)}">
 		<h2>All Employee</h2>
 		<table class="table table-striped">

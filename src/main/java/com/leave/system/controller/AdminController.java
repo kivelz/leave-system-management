@@ -135,10 +135,6 @@ public class AdminController {
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	public String UpdateEmployee(@Validated Employee employee, RedirectAttributes redirectAttributes,
 			BindingResult bindingResult, @PathVariable(name = "id") Integer id, Model model) {
-
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>");
-
-		System.out.println(employee);
 		employeeRepository.saveEmployee(employee);
 		return "redirect:/admin/employee/main";
 
@@ -147,7 +143,7 @@ public class AdminController {
 	// delete employee
 	@RequestMapping(path = "/delete/{id}", method = RequestMethod.GET)
 	public String deleteEmployee(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("message", "Failed to add employee");
+		redirectAttributes.addFlashAttribute("message", "Deleted employee");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		employeeRepository.deleteEmployee((employeeRepository.findById(id).orElse(null)));
 		return "redirect:/admin/employee/main";
