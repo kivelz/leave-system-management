@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -51,46 +51,50 @@ public class AdminController {
 
 	// get method for viewing all employee
 	@RequestMapping(path = "/list", method = RequestMethod.GET)
-	public String viewEmployee(HttpSession session, Model model) {
+	public String viewEmployee(HttpSession session,Model model) {
 		UserSession us = (UserSession) session.getAttribute("US");
-		System.out.println(us.toString());
+	
 		if (us.getEmployee().getRole().getId() == 1) {
-
 			List<Employee> employees = employeeRepository.findAll();
+			
+			System.out.println(employees);
 			Map<Integer, Employee> employeesManagers = new HashMap<Integer, Employee>();
 			for (Employee employee : employees) {
 				Optional<Employee> value = employeeRepository.findEmployeeId(employee.getManagerid());
-//				System.out.println( value.get());
+			
 				if (value.isPresent() && value.get() != null) {
 					employeesManagers.put(employee.getManagerid(), value.get());
-					System.out.println("Name : " + value.get().getName());
 				}
-
 				model.addAttribute("roles", rRepo.findAll());
 				model.addAttribute("employees", employees);
-				model.addAttribute("employeesManagers", employeesManagers);
-				return "admin/employees";
+				model.addAttribute("employeesManagers", employeesManagers);	
 			}
+			return "admin/employees";
 		}
 		return "redirect:/home/login";
 	}
 
 	// get method for getting employee form
 	@RequestMapping(path = "/create", method = RequestMethod.GET)
-	public String addEmployee(Model model) {
-		Role roleToFindRole = new Role();
-		roleToFindRole.setId(1);
-		List<Employee> list = employeeRepository.findByRole(roleToFindRole);
-		model.addAttribute("employee", new Employee());
-		model.addAttribute("roles", rRepo.findAll());
-		model.addAttribute("empWithRole", list);
-		return "admin/addemployee";
+	public String addEmployee(HttpSession session, Model model) {
+		UserSession us = (UserSession) session.getAttribute("US");
+		if (us.getEmployee().getRole().getId() == 1) {
+			Role roleToFindRole = new Role();
+			roleToFindRole.setId(1);
+			List<Employee> list = employeeRepository.findByRole(roleToFindRole);
+			model.addAttribute("employee", new Employee());
+			model.addAttribute("roles", rRepo.findAll());
+			model.addAttribute("empWithRole", list);
+			return "admin/addemployee";
+		}
+		return "redirect:/home/login";
+		
 	}
 
 	// post method for saving employee
-	@RequestMapping(path = "/employees", method = RequestMethod.POST)
+	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public String saveEmployee(@Validated Employee employee, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, Model model) {
+		RedirectAttributes redirectAttributes, Model model) {
 		Role roleToFindRole = new Role();
 		List<Role> roles = rRepo.findAll();
 		roleToFindRole.setId(1);
@@ -111,7 +115,6 @@ public class AdminController {
 		}
 		redirectAttributes.addFlashAttribute("message", "Successfully added employee");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
-		// to be implemented once login feature is done
 		employeeRepository.saveEmployee(employee);
 		return "redirect:/admin/employee/list";
 
@@ -130,15 +133,23 @@ public class AdminController {
 		return "admin/editemployee";
 	}
 
-	@RequestMapping(path = "/update", method = RequestMethod.POST)
-	public String UpdateEmployee(Employee employee) {
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	public String UpdateEmployee(@Validated Employee employee, RedirectAttributes redirectAttributes, 
+		BindingResult bindingResult, @PathVariable(name = "id") Integer id, Model model) {
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>");
+		
+		System.out.println(employee);
 		employeeRepository.saveEmployee(employee);
 		return "redirect:/admin/employee/list";
+
 	}
 
 	//delete employee
 	@RequestMapping(path = "/delete/{id}", method = RequestMethod.GET)
-	public String deleteEmployee(@PathVariable(name = "id") Integer id) {
+	public String deleteEmployee(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message", "Failed to add employee");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		employeeRepository.deleteEmployee((employeeRepository.findById(id).orElse(null)));
 		return "redirect:/admin/employee/list";
 	}

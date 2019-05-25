@@ -72,6 +72,10 @@ public class AdminService implements AdminServiceIF {
 		 eRepository.delete(eRepository.findById(employee.getId()).orElse(null));
 	}
 
-
+	@Override
+	@Transactional
+	public Employee changeEmployee(Employee emp) {
+		return eRepository.save(emp);
+	}
 	
 }

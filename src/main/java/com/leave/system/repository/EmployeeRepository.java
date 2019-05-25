@@ -25,6 +25,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	Optional<Employee> findById(@Value("id") Integer id);
 	
 	public List<Employee> findByUseridAndPassword(String userid, String password);
+	
+	@Query("SELECT DISTINCT m.name FROM Employee e, Employee m where e.managerid = m.id ")
+	ArrayList<String> findAllManagerNames();
 
 	
 }
