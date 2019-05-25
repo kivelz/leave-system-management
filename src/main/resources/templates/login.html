@@ -2,9 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<th:block th:include="layout/header"></th:block>
+<title>Laps : Employee Login</title>
 </head>
 <body>
+
+
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
 	<div class="container mt-5">
 
 		<h1>Edit Employee</h1>
@@ -29,5 +35,14 @@
 			<button class="btn btn-primary">Update</button>
 		</form>
 	</div>
+	
+	<script>
+ $(document).ready(function(){
+      setTimeout(function() {
+         $('#successMessage').fadeOut('slow');
+         }, 2000); // <-- time in milliseconds
+ });
+ </script>
+ 
 </body>
 </html>

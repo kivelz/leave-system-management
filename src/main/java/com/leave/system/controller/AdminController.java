@@ -122,7 +122,11 @@ public class AdminController {
 
 	// update employee get method
 	@RequestMapping(path = "/update/{id}", method = RequestMethod.GET)
-	public String editEmployee(Model model, @PathVariable(name = "id") Integer id) {
+	public String editEmployee(HttpSession session, Model model, @PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+		UserSession us = (UserSession) session.getAttribute("US");
+		redirectAttributes.addFlashAttribute("message", "You are not authorized to view this page");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		if (us.getEmployee().getRole().getId() == 1) {
 		Role roleToFindRole = new Role();
 		roleToFindRole.setId(1);
 		List<Employee> list = employeeRepository.findByRole(roleToFindRole);
@@ -131,6 +135,10 @@ public class AdminController {
 		model.addAttribute("employee", em);
 		model.addAttribute("empWithRole", list);
 		return "admin/editemployee";
+		}
+		redirectAttributes.addFlashAttribute("message", "You are not authorized to view this page");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		return "redirect:/home/login";
 	}
 
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
