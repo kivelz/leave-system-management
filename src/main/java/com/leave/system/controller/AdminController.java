@@ -93,31 +93,35 @@ public class AdminController {
 
 	// post method for saving employee
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
-	public String saveEmployee(@Validated Employee employee, BindingResult bindingResult,
+	public String saveEmployee(@Validated Employee employee,HttpSession session, BindingResult bindingResult,
 		RedirectAttributes redirectAttributes, Model model) {
-		Role roleToFindRole = new Role();
-		List<Role> roles = rRepo.findAll();
-		roleToFindRole.setId(1);
-		List<Employee> list = employeeRepository.findByRole(roleToFindRole);
-		Employee emp = employeeRepository.findByuserid(employee.getUserid());
-		redirectAttributes.addFlashAttribute("message", "Failed to add employee");
-		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-		if (emp != null) {
-			bindingResult.rejectValue("userid", "error.user",
-					"There is already a employee registered with the username provided");
-		}
-		if (bindingResult.hasErrors()) {
+		UserSession us = (UserSession) session.getAttribute("US");	
+		if (us.getEmployee().getRole().getId() == 1) {
+			Role roleToFindRole = new Role();
+			List<Role> roles = rRepo.findAll();
+			roleToFindRole.setId(1);
+			List<Employee> list = employeeRepository.findByRole(roleToFindRole);
+			Employee emp = employeeRepository.findByuserid(employee.getUserid());
+			redirectAttributes.addFlashAttribute("message", "Failed to add employee");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+			if (emp != null) {
+				bindingResult.rejectValue("userid", "error.user",
+						"There is already a employee registered with the username provided");
+			}
+			if (bindingResult.hasErrors()) {
 
-			model.addAttribute("employee", employee);
-			model.addAttribute("empWithRole", list);
-			model.addAttribute("roles", roles);
-			return "admin/addemployee";
+				model.addAttribute("employee", employee);
+				model.addAttribute("empWithRole", list);
+				model.addAttribute("roles", roles);
+				return "admin/addemployee";
+			}
+			redirectAttributes.addFlashAttribute("message", "Successfully added employee");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+			employeeRepository.saveEmployee(employee);
+			return "redirect:/admin/employee/list";	
 		}
-		redirectAttributes.addFlashAttribute("message", "Successfully added employee");
-		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
-		employeeRepository.saveEmployee(employee);
-		return "redirect:/admin/employee/list";
-
+		
+		return "redirect:/home/login";
 	}
 
 	// update employee get method
