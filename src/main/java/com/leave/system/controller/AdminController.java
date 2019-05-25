@@ -45,7 +45,7 @@ public class AdminController {
 
 
 	// get method for viewing all employee
-	@RequestMapping(path = "/main", method = RequestMethod.GET)
+	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String viewEmployee(HttpSession session, Model model) {
 		UserSession us = (UserSession) session.getAttribute("US");
 
@@ -60,6 +60,7 @@ public class AdminController {
 				if (value.isPresent() && value.get() != null) {
 					employeesManagers.put(employee.getManagerid(), value.get());
 				}
+				model.addAttribute("username", us.getEmployee().getName());
 				model.addAttribute("roles", rRepo.findAll());
 				model.addAttribute("employees", employees);
 				model.addAttribute("employeesManagers", employeesManagers);
@@ -113,7 +114,7 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("message", "Successfully added employee");
 			redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 			employeeRepository.saveEmployee(employee);
-			return "redirect:/admin/employee/main";
+			return "redirect:/admin/employee/";
 		}
 
 		return "redirect:/home/login";
@@ -136,7 +137,7 @@ public class AdminController {
 	public String UpdateEmployee(@Validated Employee employee, RedirectAttributes redirectAttributes,
 			BindingResult bindingResult, @PathVariable(name = "id") Integer id, Model model) {
 		employeeRepository.saveEmployee(employee);
-		return "redirect:/admin/employee/main";
+		return "redirect:/admin/employee/";
 
 	}
 
@@ -146,7 +147,7 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("message", "Deleted employee");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		employeeRepository.deleteEmployee((employeeRepository.findById(id).orElse(null)));
-		return "redirect:/admin/employee/main";
+		return "redirect:/admin/employee/";
 	}
 
 }

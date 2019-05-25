@@ -5,11 +5,12 @@
 <th:block th:include="layout/header"></th:block>
 </head>
 
-
-<div class="container mt-5"><!-- start of container -->
 <div th:if="${message}" th:text="${message}"
 	th:class="${'alert ' + alertClass}" id="successMessage"
 	style="text-align: center" /></div>
+	
+<div class="container mt-5"><!-- start of container -->
+Welcome back Admin: <strong><span th:if="${username}" th:text="${username}"></span> </strong>
 <div class="row">
 <div class="col-md-3">
  <p class ="lead">Admin Menu</p>
