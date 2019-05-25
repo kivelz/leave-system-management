@@ -1,0 +1,27 @@
+@charset "ISO-8859-1";
+
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+
+}
+
+html: {
+	font-size: 12px;
+}
+body {
+	font-size: 12px;
+	box-sizing: border-box;
+}
+li a {
+	list-style-type: none;
+	text-decoration: none;
+}
+a {
+	text-decoration: none;
+}
+.lead {
+	font-weight: bold;
+}

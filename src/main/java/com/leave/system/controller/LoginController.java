@@ -43,7 +43,7 @@ public class LoginController {
 			userSession.setEmployee(emp);
 			session.setAttribute("US", userSession);
 			if(emp.getRole().getId() == 1) {
-				return new ModelAndView("redirect:/admin/employee/list");
+				return new ModelAndView("redirect:/admin/employee/");
 			}
 			else if(emp.getRole().getId() == 2) {
 				return new ModelAndView("redirect:/staff/");
