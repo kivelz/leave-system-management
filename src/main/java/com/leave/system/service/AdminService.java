@@ -65,7 +65,12 @@ public class AdminService implements AdminServiceIF {
 		// TODO Auto-generated method stub
 		return eRepository.findByuserid(userid);
 	}
-
+	
+	@Override
+	@Transactional
+	public void deleteEmployee(Employee employee) {
+		 eRepository.delete(eRepository.findById(employee.getId()).orElse(null));
+	}
 
 
 	

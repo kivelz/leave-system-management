@@ -26,6 +26,6 @@ public interface AdminServiceIF {
 
 	Employee findByuserid(String userid);
 	
-	
+	void deleteEmployee(Employee employee);
 
 }

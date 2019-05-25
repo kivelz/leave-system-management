@@ -69,7 +69,7 @@ public class AdminController {
 				model.addAttribute("roles", rRepo.findAll());
 				model.addAttribute("employees", employees);
 				model.addAttribute("employeesManagers", employeesManagers);
-				return "employees";
+				return "admin/employees";
 			}
 		}
 		return "redirect:/home/login";
@@ -84,7 +84,7 @@ public class AdminController {
 		model.addAttribute("employee", new Employee());
 		model.addAttribute("roles", rRepo.findAll());
 		model.addAttribute("empWithRole", list);
-		return "addemployee";
+		return "admin/addemployee";
 	}
 
 	// post method for saving employee
@@ -107,7 +107,7 @@ public class AdminController {
 			model.addAttribute("employee", employee);
 			model.addAttribute("empWithRole", list);
 			model.addAttribute("roles", roles);
-			return "addemployee";
+			return "admin/addemployee";
 		}
 		redirectAttributes.addFlashAttribute("message", "Successfully added employee");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
@@ -127,7 +127,7 @@ public class AdminController {
 		model.addAttribute("roles", rRepo.findAll());
 		model.addAttribute("employee", em);
 		model.addAttribute("empWithRole", list);
-		return "editemployee";
+		return "admin/editemployee";
 	}
 
 	@RequestMapping(path = "/update", method = RequestMethod.POST)
@@ -135,12 +135,12 @@ public class AdminController {
 		employeeRepository.saveEmployee(employee);
 		return "redirect:/admin/employee/list";
 	}
-//
-//	//delete employee
-//	@RequestMapping(path = "/employees/delete/{id}", method = RequestMethod.GET)
-//	public String deleteEmployee(@PathVariable(name = "id") Integer id) {
-//		employeeRepository.delete(employeeRepository.findById(id).orElse(null));
-//		return "redirect:/employees";
-//	}
+
+	//delete employee
+	@RequestMapping(path = "/delete/{id}", method = RequestMethod.GET)
+	public String deleteEmployee(@PathVariable(name = "id") Integer id) {
+		employeeRepository.deleteEmployee((employeeRepository.findById(id).orElse(null)));
+		return "redirect:/admin/employee/list";
+	}
 
 }
