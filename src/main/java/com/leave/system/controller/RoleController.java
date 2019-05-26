@@ -1,5 +1,7 @@
 package com.leave.system.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,20 +10,22 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.leave.system.javabean.UserSession;
 import com.leave.system.model.Role;
 import com.leave.system.repository.RoleRepository;
+import com.leave.system.service.RoleServiceIF;
 import com.leave.system.validator.RoleValidator;
 
 @Controller
+@SessionAttributes("session")
+@RequestMapping("/admin/role")
 public class RoleController {
 	
-	private RoleRepository repository;
-	
 	@Autowired
-	public void setRepository(RoleRepository repository) {
-		this.repository = repository;
-	}
+	private RoleServiceIF repository;
+	
 	
 	@InitBinder
 	protected void InitBinder(WebDataBinder binder) {
@@ -29,25 +33,38 @@ public class RoleController {
 	}
 	
 	
-	@RequestMapping(path = "/roles", method = RequestMethod.GET)
-	public String viewRole(Model model) {
-		model.addAttribute("roles", repository.findAll());
-		return "viewrole";
+	
+	@RequestMapping(path = "/list", method = RequestMethod.GET)
+
+	public String viewRole(Model model, HttpSession session) {
+		UserSession userSession = (UserSession) session.getAttribute("US");
+		if(userSession.getEmployee().getRole().getId() == 1) {
+			model.addAttribute("roles", repository.findAll());
+			return "viewrole";
+		}
+		return "redirect:/home/login";
 	}
 	
-	@RequestMapping(path = "/roles", method = RequestMethod.POST)
+	
+	@RequestMapping(path = "/update/{id}", method = RequestMethod.GET)
+	public String editRole(Model model, @PathVariable(name = "id") Integer id, HttpSession session) {
+		UserSession userSession = (UserSession) session.getAttribute("US");
+		if(userSession.getEmployee().getRole().getId() == 1) {
+			Role role = repository.findById(id).orElse(null);
+			model.addAttribute("roles", role);
+			return "editrole";
+		}
+		return "redirect:/home/login";
+	}
+	
+	@RequestMapping(path = "/update/{id}", method = RequestMethod.POST)
 	public String saveRole(Role role) {
-		repository.save(role);
-		return "redirect:/employees";
+		repository.saveRole(role);
+		return "redirect:/admin/role/list";
 
 	}
 	
-	@RequestMapping(path = "/role/update/{id}", method = RequestMethod.GET)
-	public String editRole(Model model, @PathVariable(name = "id") Integer id) {
-		Role role = repository.findById(id).orElse(null);
-		model.addAttribute("roles", role);
-		return "editrole";
-	}
+	
 	
 
 }
