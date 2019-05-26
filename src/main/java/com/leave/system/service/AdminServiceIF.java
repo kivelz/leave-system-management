@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
 
@@ -30,5 +36,11 @@ public interface AdminServiceIF {
 	
 
 	Employee changeEmployee(Employee emp);
+
+	Page<Employee> paginationFindAll(PageRequest of);
+
+
+	
+
 
 }

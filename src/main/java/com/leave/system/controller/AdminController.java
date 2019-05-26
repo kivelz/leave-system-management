@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,14 +47,29 @@ public class AdminController {
 
 
 	// get method for viewing all employee
-	@RequestMapping(path = "/", method = RequestMethod.GET)
-	public String viewEmployee(HttpSession session, Model model) {
+	@RequestMapping(value = "/**", method = RequestMethod.GET)
+	public String viewEmployee(HttpServletRequest request, HttpSession session, Model model) {
 		UserSession us = (UserSession) session.getAttribute("US");
+		if (us.getEmployee().getRole().getId() == 1) {		
+			   int page = 0; 
+		        int size = 2; 
+		        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+		            page = Integer.parseInt(request.getParameter("page")) - 1;
+		        }
 
-		if (us.getEmployee().getRole().getId() == 1) {
-			List<Employee> employees = employeeRepository.findAll();
-
-			System.out.println(employees);
+		        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+		            size = Integer.parseInt(request.getParameter("size"));
+		        }
+		        
+		    Page<Employee> page2 =  employeeRepository.paginationFindAll(PageRequest.of(page, size));
+		    
+		       
+			List<Employee> employees = page2.getContent();
+			for (Employee employee : employees) {
+				System.out.println(employee);
+			}
+			
+			
 			Map<Integer, Employee> employeesManagers = new HashMap<Integer, Employee>();
 			for (Employee employee : employees) {
 				Optional<Employee> value = employeeRepository.findEmployeeId(employee.getManagerid());
@@ -60,14 +77,18 @@ public class AdminController {
 				if (value.isPresent() && value.get() != null) {
 					employeesManagers.put(employee.getManagerid(), value.get());
 				}
-				model.addAttribute("username", us.getEmployee().getName());
-				model.addAttribute("roles", rRepo.findAll());
-				model.addAttribute("employees", employees);
-				model.addAttribute("employeesManagers", employeesManagers);
 			}
-			return "admin/index";
+			
+			model.addAttribute("username", us.getEmployee().getName());
+			model.addAttribute("roles", rRepo.findAll());
+
+			model.addAttribute("employees", employees);
+			model.addAttribute("employeesManagers", employeesManagers);
+			model.addAttribute("totalPages", page2.getTotalPages());
+			model.addAttribute("page", page2.getNumber());
+			return 	"admin/index";
 		}
-		return "redirect:/home/login";
+	return "redirect:/home/login";
 	}
 
 	// get method for getting employee form

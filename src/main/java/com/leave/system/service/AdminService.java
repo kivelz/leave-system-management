@@ -5,9 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import  org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.leave.system.model.Employee;
 import com.leave.system.model.Role;
@@ -77,5 +84,18 @@ public class AdminService implements AdminServiceIF {
 	public Employee changeEmployee(Employee emp) {
 		return eRepository.save(emp);
 	}
+
+	@Override
+	@Transactional
+	public Page<Employee> paginationFindAll(PageRequest request) {		   	
+//		int page1 =0;
+//		int size = 10;
+		 Page<Employee> pages = eRepository.findAll(PageRequest.of(request.getPageNumber(), request.getPageSize()));
+		 return pages;
+	}
+
+
+
+	
 	
 }
