@@ -122,10 +122,8 @@ public class AdminController {
 
 	// update employee get method
 	@RequestMapping(path = "/update/{id}", method = RequestMethod.GET)
-	public String editEmployee(HttpSession session, Model model, @PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+	public String editEmployee(Model model, HttpSession session, @PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
 		UserSession us = (UserSession) session.getAttribute("US");
-		redirectAttributes.addFlashAttribute("message", "You are not authorized to view this page");
-		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		if (us.getEmployee().getRole().getId() == 1) {
 		Role roleToFindRole = new Role();
 		roleToFindRole.setId(1);
@@ -143,7 +141,14 @@ public class AdminController {
 
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	public String UpdateEmployee(@Validated Employee employee, RedirectAttributes redirectAttributes,
-			BindingResult bindingResult, @PathVariable(name = "id") Integer id, Model model) {
+			BindingResult bindingResult, @PathVariable(name = "id") Integer id, Model model) {	
+		redirectAttributes.addFlashAttribute("message", "Missing attributes please fill in again");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		if(bindingResult.hasErrors()) {
+			return "redirect:/admin/employee/update/{id}";
+		}
+		redirectAttributes.addFlashAttribute("message", "Successfully updated employee");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 		employeeRepository.saveEmployee(employee);
 		return "redirect:/admin/employee/";
 
