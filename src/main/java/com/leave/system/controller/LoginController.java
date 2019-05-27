@@ -1,12 +1,9 @@
 package com.leave.system.controller;
 
-
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +21,10 @@ import com.leave.system.service.AdminService;
 @RequestMapping(value = "/home")
 @SessionAttributes("session")
 public class LoginController {
-	
+
 	@Autowired
 	private AdminService adminService;
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView Login(@ModelAttribute Employee employee) {
 		ModelAndView mavAndView = new ModelAndView("login");
@@ -39,18 +36,15 @@ public class LoginController {
 	public ModelAndView autheticateRoute(@ModelAttribute Employee employee, HttpSession session) {
 		ModelAndView mavAndView = new ModelAndView("addemployee");
 		Employee emp = adminService.authenticate(employee.getName(), employee.getPassword());
-			UserSession userSession = new UserSession();
-			userSession.setEmployee(emp);
-			session.setAttribute("US", userSession);
-			if(emp.getRole().getId() == 1) {
-				return new ModelAndView("redirect:/admin/employee/");
-			}
-			else if(emp.getRole().getId() == 2) {
-				return new ModelAndView("redirect:/staff/");
-			}
-			else if (emp.getRole().getId() == 3) {
-				return new ModelAndView("redirect:/login");
-			}
-			return mavAndView;
+		UserSession userSession = new UserSession();
+		userSession.setEmployee(emp);
+		session.setAttribute("US", userSession);
+		if (emp.getRole().getId() == 1) {
+			return new ModelAndView("redirect:/admin/employee/");
+		} 
+		else if(emp.getRole().getId() == 2) {
+			return new ModelAndView("redirect:/manager/");
+		}
+		return mavAndView;
 	}
 }

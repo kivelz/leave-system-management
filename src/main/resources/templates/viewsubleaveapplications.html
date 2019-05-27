@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>view Roles </title>
+</head>
+<body>
+
+<div  th:each="subordinate : ${subordinates}">
+	<table>
+		<tr>
+			<td>Staff ID</td>
+			<td>Name</td>
+			<td>Balance Annual Leave</td>
+			<td>Balance Medical Leave</td>
+		</tr>
+		<tr>
+			<td th:text="${subordinate.id}"></td>
+			<td th:text="${subordinate.name}"></td>
+			<td th:text="${subordinate.role.annualleave}"></td>
+			<td th:text="${subordinate.role.medicalleave}"></td>
+		</tr>
+		<tr>
+			<table>
+				<tr>
+					<td>Leave ID</td>
+					<td>Start Date</td>
+					<td>End Date</td>
+					<td>Category</td>
+					<td>Status</td>
+					<td>Details</td>
+			<!--	<td th:text="${itrStat.index}">test</td> -->
+				</tr>
+					<tr th:each="Leavedetail : ${subleave}" th:if="${subordinate.id} == ${Leavedetail.employee.id}">
+							<td th:text="${Leavedetail.id}"><input type="text" th:field="*{Leavedetail.LeaveId}" readonly="readonly"/><</td>
+							<td th:text="${#temporals.format(Leavedetail.startDate, 'dd-MM-yyyy')}">Nil</td>
+							<td th:text="${#temporals.format(Leavedetail.endDate, 'dd-MM-yyyy')}">Nil</td>
+							<td th:text="${Leavedetail.category}">Nil</td>
+							<td th:text="${Leavedetail.status}"></td>
+							<td><a th:href="@{viewIndiLeaveDetails(leaveId=${Leavedetail.id})}"> Click here</a></td>
+					</tr>
+			</table>
+		</tr>
+		<br/><br/><br/>
+	</table>
+</div>
+
+
+<style>
+table {
+  border-spacing: 25px 0px;
+}
+td {
+	padding: 1px;
+}
+</style>
+
+
+</body>
+</html>
+
+<!-- unused fields
+<td>Reason</td>
+<td>Contact Details</td>
+<td>Status</td>
+<td>Comment</td>
+<td th:text="${leave.reason}">Nil</td>
+<td th:text="${leave.contactDetails}">Nil</td>
+<td th:text="${leave.comment}">Nil</td>
+-->

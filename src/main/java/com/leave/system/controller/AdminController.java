@@ -45,17 +45,16 @@ public class AdminController {
 		binder.addValidators(new EmployeeValidator());
 	}
 
-
 	// get method for viewing all employee
 	@RequestMapping(value = "/**", method = RequestMethod.GET)
 	public String viewEmployee(HttpServletRequest request, HttpSession session, Model model) {
 		UserSession us = (UserSession) session.getAttribute("US");
-		if (us.getEmployee().getRole().getId() == 1) {		
-			   int page = 0; 
-		        int size = 2; 
-		        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-		            page = Integer.parseInt(request.getParameter("page")) - 1;
-		        }
+		if (us.getEmployee().getRole().getId() == 1) {
+			int page = 0;
+			int size = 10;
+			if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+				page = Integer.parseInt(request.getParameter("page")) - 1;
+			}
 
 		        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
 		            size = Integer.parseInt(request.getParameter("size"));
@@ -65,11 +64,6 @@ public class AdminController {
 		    
 		       
 			List<Employee> employees = page2.getContent();
-			for (Employee employee : employees) {
-				System.out.println(employee);
-			}
-			
-			
 			Map<Integer, Employee> employeesManagers = new HashMap<Integer, Employee>();
 			for (Employee employee : employees) {
 				Optional<Employee> value = employeeRepository.findEmployeeId(employee.getManagerid());

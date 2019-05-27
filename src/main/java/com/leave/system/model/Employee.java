@@ -1,6 +1,5 @@
 package com.leave.system.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
-import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 public class Employee {
@@ -139,8 +138,6 @@ public class Employee {
 		this.role = role;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -148,8 +145,6 @@ public class Employee {
 		result = prime * result + id;
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -165,8 +160,6 @@ public class Employee {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", " + (name != null ? "name=" + name + ", " : "")
@@ -177,8 +170,6 @@ public class Employee {
 				+ "]";
 	}
 
-
-
-
+	
 
 }

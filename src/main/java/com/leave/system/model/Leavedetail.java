@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Leavedetail {
@@ -23,12 +25,36 @@ public class Leavedetail {
 	@Column(name = "contact_detail")
 	private String contactDetail;
 	private String status;
+	@ManyToOne
+	@JoinColumn(name = "staffId")
+	private Employee employee;
+	private String comment;
 	
+	public String getComment() {
+		return comment;
+	}
+
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+
 	public Leavedetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 
 	/**
 	 * @return the id
@@ -165,12 +191,18 @@ public class Leavedetail {
 		this.status = status;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Leavedetail [" + (id != null ? "id=" + id + ", " : "")
-				+ (startDate != null ? "startDate=" + startDate + ", " : "")
-				+ (endDate != null ? "startEnd=" + endDate : "") + "]";
+		return "Leavedetail [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category
+				+ ", reason=" + reason + ", contactDetail=" + contactDetail + ", status=" + status + ", employee="
+				+ employee + ", comment=" + comment + "]";
 	}
+
+
+	
+
+
 
 	
 }

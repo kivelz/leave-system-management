@@ -21,7 +21,8 @@
 					<li class="list-group-item active">View all employee</li>
 					<li class="list-group-item"><a href="/admin/employee/create">Add
 							new employee</a></li>
-			  	<li class="list-group-item"><a href="/admin/role/list">View Role</a></li>
+					<li class="list-group-item"><a href="/admin/role/list">View
+							Role</a></li>
 				</ul>
 			</div>
 		</div>
@@ -58,7 +59,8 @@
 								th:attr="data-target='#modal-warning'+${employee.id }">
 								Delete</button></td>
 
-						<div class="modal modal-warning fade in" th:id="modal-warning+${employee.id}">
+						<div class="modal modal-warning fade in"
+							th:id="modal-warning+${employee.id}">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -87,30 +89,29 @@
 			</div>
 		</div>
 	</div>
- 	<nav aria-label="Pagination" th:if="${totalPages gt 0}">
-    <ul class="pagination justify-content-center font-weight-bold">
-        <li class="page-item" th:classappend="${page eq 0} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/admin/employee?page={id}(id=${page lt 2 ? 1 : page})}"
-               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li class="page-item" th:classappend="${i eq page + 1} ? 'active'"
-            th:each="i : ${#numbers.sequence( 1, totalPages, 1)}">
-            <a class="page-link" th:href="@{/admin/employee?page={id}(id=${i})}" th:text="${i}"
-               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
-        </li>
-        <li class="page-item" th:classappend="${page + 1 eq totalPages} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/admin/employee?page={id}(id=${page + 2})}"
-               aria-label="Next" title="Next Page" data-toggle="tooltip">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav> 
-</div> 
+	<nav aria-label="Pagination" th:if="${totalPages gt 0}">
+		<ul class="pagination justify-content-center font-weight-bold">
+			<li class="page-item" th:classappend="${page eq 0} ? 'disabled'">
+				<a class="page-link"
+				th:href="@{/admin/employee?page={id}(id=${page lt 2 ? 1 : page})}"
+				aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+					<span aria-hidden="true">&laquo;</span>
+			</a>
+			</li>
+			<li class="page-item" th:classappend="${i eq page + 1} ? 'active'"
+				th:each="i : ${#numbers.sequence( 1, totalPages, 1)}"><a
+				class="page-link" th:href="@{/admin/employee?page={id}(id=${i})}"
+				th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a></li>
+			<li class="page-item"
+				th:classappend="${page + 1 eq totalPages} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/admin/employee?page={id}(id=${page + 2})}"
+				aria-label="Next" title="Next Page" data-toggle="tooltip"> <span
+					aria-hidden="true">&raquo;</span>
+			</a></li>
+		</ul>
+	</nav>
+</div>
 <!-- end -->
 <script>
 	$(document).ready(function() {
