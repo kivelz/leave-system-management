@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,12 +52,33 @@ public class ReviewLeaveController {
 	}
 	
 	@RequestMapping(path = "/", method = RequestMethod.GET)
-	public String GetManagerView(HttpSession session, Model model) {
-		UserSession userSession = (UserSession) session.getAttribute("US");
-		int id = userSession.getEmployee().getId();
-		String url = "/manager/viewsubleave?managerId=" + id;
-		model.addAttribute("url", url);
-		return "leaveindex";
+	  public String leavePage(HttpServletRequest request, Model model) {
+	        
+	        int page = 0; 
+	        int size = 10; 
+	        
+	        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+				page = Integer.parseInt(request.getParameter("page")) - 1;
+			}		
+			if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+				size = Integer.parseInt(request.getParameter("size"));
+			}	
+	        
+	        model.addAttribute("leavedetails", lvRepo.findAll(PageRequest.of(page, size)));
+	        return "leave/leave";
+	    }
+	
+	@RequestMapping(path = "/leave/{id}", method = RequestMethod.GET)
+	public String EditLeaveDetails(Model model, @PathVariable(name = "id") Integer id) {
+		Leavedetail leavedetail = lvRepo.findById(id).orElse(null);
+		model.addAttribute("leavedetail", leavedetail);
+		return "leave/editleavedetail";
+	}
+	
+	@RequestMapping(path = "/leave/{id}", method = RequestMethod.POST)
+	public String saveLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model) {
+		lvRepo.save(leavedetail);
+		return "redirect:/manager/";
 	}
 	
 	@RequestMapping(path="/viewsubleave", params = "managerId" ,method = RequestMethod.GET)

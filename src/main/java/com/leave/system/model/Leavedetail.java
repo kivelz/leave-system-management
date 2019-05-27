@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Leavedetail {
 	
@@ -17,7 +19,9 @@ public class Leavedetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "start_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "end_date")
 	private LocalDate endDate;
 	private String category;

@@ -17,7 +17,7 @@
 			<th>Contact Details</th>
 			<th>Status</th>
 		</tr>
-		<tr th:each="lv : ${#list.sort(leavedetails)}">
+		<tr th:each="lv : ${leavedetails}">
 			<td th:text="${lv.id}">ID</td>
 			<td th:text="${lv.startDate}">Start Date</td>
 			<td th:text="${lv.endDate}">End Date</td>
@@ -25,7 +25,7 @@
 			<td th:text=${lv.reason}></td>
 			<td th:text="${lv.contactDetail}"></td>
 			<td th:text="${lv.status}">End Date</td>
-	<td></td>
+	<td>><a th:href="${'leave/' + lv.id}" class="btn btn-outline-primary">Edit</a></td>
 		</tr>
 
 	</table>
