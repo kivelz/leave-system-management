@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,11 +20,12 @@ public class Leavedetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "start_date")
+	@Column(name = "start_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "Please choose a start date")
 	private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "end_date")
+    @Column(name = "end_date")
 	private LocalDate endDate;
 	private String category;
 	private String reason;

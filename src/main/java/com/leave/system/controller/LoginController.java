@@ -45,6 +45,9 @@ public class LoginController {
 		else if(emp.getRole().getId() == 2) {
 			return new ModelAndView("redirect:/manager/");
 		}
+		else if(emp.getName() != null) {
+			return new ModelAndView("redirect:/staff/");
+		}
 		return mavAndView;
 	}
 }
