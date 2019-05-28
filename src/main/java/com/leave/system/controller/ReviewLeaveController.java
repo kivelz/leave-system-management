@@ -46,19 +46,12 @@ public class ReviewLeaveController {
 	}
 	
 	@RequestMapping(path = "/", method = RequestMethod.GET)
-	  public String leavePage(HttpServletRequest request, Model model) {
+	  public String leavePage(HttpServletRequest request, Model model, HttpSession session) {
 	        
-	        int page = 0; 
-	        int size = 10; 
-	        
-	        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-				page = Integer.parseInt(request.getParameter("page")) - 1;
-			}		
-			if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
-				size = Integer.parseInt(request.getParameter("size"));
-			}	
-	        
-	        model.addAttribute("leavedetails", lvRepo.findAll(PageRequest.of(page, size)));
+		UserSession us = (UserSession) session.getAttribute("US");
+		String url = "/manager/viewsubLeave?managerId" + us.getEmployee().getId();
+		
+		model.addAttribute("url1", url);
 	        return "leave/leave";
 	    }
 	
