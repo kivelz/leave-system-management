@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>All Leave history</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
+<div class="container">
+	<h1>
+		Leave History for <span th:text=${username}></span>
+	</h1>
+	<table class="table table-striped">
+		<tr>
+			<th>Id</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Status</th>
+		</tr>
+		<tr th:each="hist : ${pending}">
+			<td th:text=${hist.id}></td>
+			<td th:text=${hist.startDate}></td>
+			<td th:text=${hist.endDate}></td>
+			<td th:text=${hist.status}></td>
+			<td><a th:href="${'leave/' + hist.id}"
+				class="btn btn-outline-primary">Edit</a></td>
+		</tr>
+	</table>
+
+	<table class="table table-striped">
+		<tr>
+			<th>Id</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Status</th>
+			<th>Reason</th>
+			<th>Comment</th>
+		</tr>
+		<tr th:each="hist : ${history}">
+			<td th:text=${hist.id}></td>
+			<td th:text=${hist.startDate}></td>
+			<td th:text=${hist.endDate}></td>
+			<td th:text=${hist.status}></td>
+			<td th:text=${hist.reason}></td>
+			<td th:text=${hist.comment}>No comment</td>
+		</tr>
+	</table>
+</div>
+
+</body>
+</html>

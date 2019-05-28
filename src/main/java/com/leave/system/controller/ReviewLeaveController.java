@@ -3,9 +3,6 @@ package com.leave.system.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,16 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.LeaveRepository;
 import com.leave.system.service.ManagerSvc;
@@ -31,7 +24,7 @@ import com.leave.system.model.Employee;
 import com.leave.system.model.LeaveRecords;
 import com.leave.system.model.Leavedetail;
 import com.leave.system.model.Role;
-import com.leave.system.repository.*;
+
 
 
 @Controller
@@ -173,14 +166,15 @@ public class ReviewLeaveController {
 					medicalL = subordinate.getRole().getMedicalleave();
 					annualL = annualL - aConsumed;
 					medicalL = medicalL - mConsumed;
-					
-					subordinate.getRole().setAnnualleave(annualL);
-					subordinate.getRole().setMedicalleave(medicalL);
 				}
 			}
 		}
 		
+		Role role = subordinate.getRole();
+		role.setAnnualleave(annualL);
+		role.setMedicalleave(medicalL);
 		
+		model.addAttribute("role", role);
 		model.addAttribute("subordinate", subordinate);
 		model.addAttribute("leaveDetail", leave);
 		model.addAttribute("message", msg);

@@ -72,12 +72,13 @@
 			
 	
 	<p th:if="${message} != null" th:text="${message}"></p>
+	<h5> Leave Applications in same period</h5>
+
+<p th:if="${leaveinRange} == null"> No overlapping leave applications for this leave application</p>
 </div>
 
-<h2> Leave Applications in same period</h2>
 
-<p th:if="{$leaveinRange} == null"> No overlapping leave applications for this leave application</p>
-<div the:if="{$leaveinRange} != null" th:each="subordinate : ${subordinates}">
+<div th:if="${leaveinRange} != null" th:each="subordinate : ${subordinates}">
 		<table class="table table-striped">
 			<tr>
 				<td>Staff ID</td>
@@ -118,7 +119,7 @@
 		<br />
 
 	</div>
-</div>
+
 	
 
 </body>

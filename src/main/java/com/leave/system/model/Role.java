@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -13,6 +14,7 @@ public class Role {
 	@Id
 	private int id;
 	private String title;
+	@NotEmpty(message = "You have insufficent leave")
 	private int annualleave;
 	private int medicalleave;
 //	@OneToMany(targetEntity = Employee.class, mappedBy = "role")

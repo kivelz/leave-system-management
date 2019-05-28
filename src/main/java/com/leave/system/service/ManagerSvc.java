@@ -23,15 +23,13 @@ public class ManagerSvc {
 	ArrayList<Employee> subordinates;
 	ArrayList<Leavedetail> subLeave;
 	ArrayList<Leavedetail> allLeave;
+
 	
-//	public ManagerSvc() {
-//		super();
-//		annualL = 0;
-//		medicalL = 0;
-//		aConsumed = 0;
-//		mConsumed = 0;
-//	}
-	
+	public ManagerSvc() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ManagerSvc(int managerId, List<Leavedetail> allLeave, List<Employee> allEmployees) {
 		super();
 		this.managerId = managerId;
@@ -111,6 +109,7 @@ public class ManagerSvc {
 		return role;
 	}
 	
+
 	public Leavedetail checkValid(Leavedetail leave) {
 		annualL = 0;
 		medicalL = 0;
@@ -121,6 +120,7 @@ public class ManagerSvc {
 		
 		return leave;
 	}
+	
 	
 	public String checkValidMsg(Leavedetail leave, Role role) {
 		
@@ -156,6 +156,7 @@ public class ManagerSvc {
 		return message;
 	}
 	
+
 	public Boolean toSave(String message) {
 
 		Boolean save = false;
@@ -175,6 +176,7 @@ public class ManagerSvc {
 		return save;
 	}
 	
+	
 	public ArrayList<Leavedetail> getLeaveinRange(Leavedetail leave) {
 		
 		ArrayList<Leavedetail> leaveInRange = new ArrayList<>();
@@ -187,10 +189,11 @@ public class ManagerSvc {
 		
 		return leaveInRange;
 	}
-	
+
 	public ArrayList<Employee> getSubordinates() {
 		return subordinates;
 	}
+
 
 	public ArrayList<Leavedetail> getSubLeave() {
 		return subLeave;
