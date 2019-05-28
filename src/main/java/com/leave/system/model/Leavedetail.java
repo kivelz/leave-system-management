@@ -207,8 +207,22 @@ public class Leavedetail {
 	}
 
 
-	
-
+	public boolean overlaps(Leavedetail l2) {
+			
+			boolean overlap = false;
+			
+			if ((this.startDate.isBefore(l2.endDate) || this.startDate.isEqual(l2.endDate)) 
+					&& (l2.startDate.isBefore(this.endDate) || l2.startDate.equals(this.endDate))) {
+				overlap = true;
+			}
+			
+			else if ((l2.startDate.isBefore(this.endDate) || l2.startDate.isEqual(this.endDate)) 
+					&& (this.startDate.isBefore(l2.endDate) || this.startDate.equals(l2.endDate))) {
+				overlap = true;
+			}
+			
+			return overlap;
+		};
 
 
 	

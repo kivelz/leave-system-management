@@ -175,6 +175,17 @@ public class ManagerSvc {
 		return save;
 	}
 	
+	public ArrayList<Leavedetail> getLeaveinRange() {
+		
+		ArrayList<Leavedetail> leaveInRange = new ArrayList<>();
+		
+		for (Leavedetail l : subLeave) {
+			
+		}
+		
+		return leaveInRange;
+	}
+	
 	public ArrayList<Employee> getSubordinates() {
 		return subordinates;
 	}
