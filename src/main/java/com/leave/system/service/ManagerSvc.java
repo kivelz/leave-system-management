@@ -175,12 +175,14 @@ public class ManagerSvc {
 		return save;
 	}
 	
-	public ArrayList<Leavedetail> getLeaveinRange() {
+	public ArrayList<Leavedetail> getLeaveinRange(Leavedetail leave) {
 		
 		ArrayList<Leavedetail> leaveInRange = new ArrayList<>();
 		
 		for (Leavedetail l : subLeave) {
-			
+			if(leave.overlaps(l)) {
+				leaveInRange.add(l);
+			}
 		}
 		
 		return leaveInRange;
