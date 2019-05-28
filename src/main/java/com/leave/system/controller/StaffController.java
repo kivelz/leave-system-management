@@ -42,7 +42,6 @@ public class StaffController {
 	private EmployeeRepository eRepo;
 	@Autowired
 	private LeaveRepository lRepo;
-	
 
 	@Autowired
 	public void seteRepo(EmployeeRepository eRepo) {
@@ -67,23 +66,24 @@ public class StaffController {
 
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public String createLeave(@Validated Leavedetail leavedetails, HttpSession session, BindingResult bindingResult,
-		Model model, RedirectAttributes redirectAttributes) {
-		UserSession userSession = (UserSession) session.getAttribute("US");	
-		
+			Model model, RedirectAttributes redirectAttributes) {
+		UserSession userSession = (UserSession) session.getAttribute("US");
+
 		if (leavedetails.getStartDate() != null && leavedetails.getEndDate() != null) {
 			leavedetails.setStartDate(leavedetails.getStartDate().plusDays(1));
 			leavedetails.setEndDate(leavedetails.getEndDate().plusDays(1));
-		}	
+		}
 		if (leavedetails.getStartDate().isBefore(LocalDate.now())) {
 			bindingResult.rejectValue("startDate", "error.leavedetails", "*You cannot backdate your leave!");
 		}
 		if (leavedetails.getEndDate().isBefore(leavedetails.getStartDate())) {
-			bindingResult.rejectValue("endDate", "error.leavedetails", "*Your end date cannot be eariler than start date");
+			bindingResult.rejectValue("endDate", "error.leavedetails",
+					"*Your end date cannot be eariler than start date");
 		}
 
 		if (bindingResult.hasErrors()) {
 			return "staff/createleave";
-			
+
 		}
 		redirectAttributes.addFlashAttribute("message", "Leave successfully applied");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
@@ -101,105 +101,109 @@ public class StaffController {
 	@RequestMapping(path = "/history", method = RequestMethod.GET)
 	public String ViewHistory(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		UserSession sess = (UserSession) session.getAttribute("US");
-		ArrayList<Leavedetail> list = new ArrayList<>();
-		ArrayList<Leavedetail> pending = new ArrayList<>();
-		String username = sess.getEmployee().getName();
-		List<Leavedetail> gethistory = lRepo.findAll();
-		
-		
-		for (Leavedetail leave : gethistory) {
-			if (leave.getEmployee().getId() == sess.getEmployee().getId() &&  !leave.getStatus().contentEquals("Applied/Updated")) {
-				list.add(leave);
-			}
-		}
-		for(Leavedetail leave: gethistory) {
-			if(leave.getEmployee().getId() == sess.getEmployee().getId() && leave.getStatus().contentEquals("Applied/Updated")) {
-				pending.add(leave);
-			}
-		}
-		model.addAttribute("pending", pending);
-		model.addAttribute("history", list);
-		model.addAttribute("username", username);
+		if (sess.getEmployee() != null) {
+			ArrayList<Leavedetail> list = new ArrayList<>();
+			ArrayList<Leavedetail> pending = new ArrayList<>();
+			String username = sess.getEmployee().getName();
+			List<Leavedetail> gethistory = lRepo.findAll();
 
-		return "staff/history";
+			for (Leavedetail leave : gethistory) {
+				if (leave.getEmployee().getId() == sess.getEmployee().getId()
+						&& !leave.getStatus().contentEquals("Applied/Updated")) {
+					list.add(leave);
+				}
+			}
+			for (Leavedetail leave : gethistory) {
+				if (leave.getEmployee().getId() == sess.getEmployee().getId()
+						&& leave.getStatus().contentEquals("Applied/Updated")) {
+					pending.add(leave);
+				}
+			}
+			model.addAttribute("pending", pending);
+			model.addAttribute("history", list);
+			model.addAttribute("username", username);
+
+			return "staff/history";
+		}
+		return "redirect:/home/login";
 	}
-	
+
 	@RequestMapping(path = "/leave/{id}", method = RequestMethod.GET)
 	public String EditLeaveDetails(Model model, @PathVariable(name = "id") Integer id) {
-		Leavedetail leavedetail = lRepo.findById(id).orElse(null);	
+		Leavedetail leavedetail = lRepo.findById(id).orElse(null);
 		model.addAttribute("leavedetail", leavedetail);
 		return "staff/editleavedetail";
 	}
-	
+
 	@RequestMapping(path = "/leave/{id}", method = RequestMethod.POST)
-	public String saveLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model, BindingResult bindingResult) {
+	public String saveLeaveDetails(Leavedetail leavedetail, @PathVariable(name = "id") Integer id, Model model,
+			BindingResult bindingResult) {
 
 		if (leavedetail.getStartDate() != null && leavedetail.getEndDate() != null) {
 			leavedetail.setStartDate(leavedetail.getStartDate().plusDays(1));
 			leavedetail.setEndDate(leavedetail.getEndDate().plusDays(1));
-		}	
-		
+		}
+
 		if (leavedetail.getStartDate().isBefore(LocalDate.now())) {
 			bindingResult.rejectValue("startDate", "error.leavedetails", "*You cannot backdate your leave!");
 		}
 		if (leavedetail.getEndDate().isBefore(leavedetail.getStartDate())) {
-			bindingResult.rejectValue("endDate", "error.leavedetails", "*Your end date cannot be eariler than start date");
+			bindingResult.rejectValue("endDate", "error.leavedetails",
+					"*Your end date cannot be eariler than start date");
 		}
 
 		if (bindingResult.hasErrors()) {
 			return "staff/createleave";
-			
+
 		}
 		lRepo.save(leavedetail);
 		return "redirect:/staff/history";
 	}
-	
+
 	@RequestMapping(path = "/leave/delete/{id}", method = RequestMethod.GET)
-	public String deleteLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model) {
+	public String deleteLeaveDetails(Leavedetail leavedetail, @PathVariable(name = "id") Integer id, Model model) {
 		lRepo.delete(leavedetail);
 		return "redirect:/staff/history";
 	}
-	
-    // Finding Employee on leave on given period
-    @RequestMapping(path = "/leave/findleave", method = RequestMethod.GET)
-    public String findEmpOnLeave(Model model) {
-    	model.addAttribute("leaves", new Leavedetail());
-        return "findleave";
-    }
-    
-	
-    @RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
-    public String FindEmpOnLeave(Model model,Leavedetail leave) {
-    	List<Leavedetail> lea = lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),leave.getEndDate());
-    	for(Leavedetail l:lea) 
-	  	  { 
-	  		  System.out.println(l); 
-  		  } 
-    	model.addAttribute("leaves", lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),leave.getEndDate()));
-  	  	return  "leaves"; 
-    }
-  
-	//Export Products to CSV file
-    @GetMapping("/leave/export")
-    public void exportCSV(HttpServletResponse response) throws Exception {
 
-        //set file name and content type
-        String filename = "LeaveList.csv";
+	// Finding Employee on leave on given period
+	@RequestMapping(path = "/leave/findleave", method = RequestMethod.GET)
+	public String findEmpOnLeave(Model model) {
+		model.addAttribute("leaves", new Leavedetail());
+		return "findleave";
+	}
 
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+	@RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
+	public String FindEmpOnLeave(Model model, Leavedetail leave) {
+		List<Leavedetail> lea = lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),
+				leave.getEndDate());
+		for (Leavedetail l : lea) {
+			System.out.println(l);
+		}
+		model.addAttribute("leaves", lRepo
+				.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
+		return "leaves";
+	}
 
-        //create a csv writer
-        StatefulBeanToCsv<Leavedetail> writer = new StatefulBeanToCsvBuilder<Leavedetail>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
+	// Export Products to CSV file
+	@GetMapping("/leave/export")
+	public void exportCSV(HttpServletResponse response) throws Exception {
 
-        //leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
-               
-        //write all leavelist to csv file
-        writer.write(lRepo.findAll());
-    }
+		// set file name and content type
+		String filename = "LeaveList.csv";
+
+		response.setContentType("text/csv");
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+		// create a csv writer
+		StatefulBeanToCsv<Leavedetail> writer = new StatefulBeanToCsvBuilder<Leavedetail>(response.getWriter())
+				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withOrderedResults(false).build();
+
+		// leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
+
+		// write all leavelist to csv file
+		writer.write(lRepo.findAll());
+	}
 
 }

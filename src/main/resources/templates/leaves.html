@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>View Leave Applications - LAPS</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+
+<div class="container">
+    <div th:if="${not #lists.isEmpty(leaves)}">
+        <h2>All Leave Applications</h2>
+        <table class="table table-striped" >
+            <tr>
+                <th>Application No.</th>
+                <th>Emp ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Category</th>
+                <th>Reason</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="leave : ${leaves}">
+                <td th:text="${leave.id}">Application ID</td>
+     			<td th:text="${leave.employee.getId()}">Emp ID</td>
+                <td th:text="${leave.startDate}">Start Date</td>
+                <td th:text="${leave.endDate}">End Date</td>
+                <td th:text="${leave.category}">Category</td>
+                <td th:text="${leave.reason}">Reason</td>
+                <td th:text="${leave.contactDetail}">Contact</td>
+                <td th:text="${leave.status}">Status</td>
+                <td> <a th:href="${'/staff/leave/' + leave.id}">Edit</a>
+                <td> <a th:href="${'/staff/leave/delete/'+leave.id}">Delete</a>
+            </tr>
+        </table>
+        
+        <a th:href="${'/staff/leave/export/'}">Print CSV</a>
+      
+    </div>
+</div>
+</body>
+</html>
