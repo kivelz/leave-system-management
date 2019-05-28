@@ -25,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.LeaveRepository;
+import com.leave.system.service.ManagerSvc;
 import com.leave.system.javabean.UserSession;
 import com.leave.system.model.Employee;
 import com.leave.system.model.LeaveRecords;
@@ -192,8 +193,10 @@ public class ReviewLeaveController {
 		
 		Employee subordinate = empRepo.findById(leaveDetail.getEmployee().getId()).get();
 		String message = new String();
+		Role role = new Role();
 		
 		List<Leavedetail> allLeave = lvRepo.findAll();
+		List<Employee> allEmployees = empRepo.findAll();
 
 		int annualL = 0;
 		int medicalL = 0;
@@ -248,13 +251,19 @@ public class ReviewLeaveController {
 			lvRepo.save(leaveDetail);
 			message = "Leave is Rejected. Comment:" + leaveDetail.getComment();
 		}
+		role = subordinate.getRole();
 		
-		subordinate.getRole().setAnnualleave(annualL);
-		subordinate.getRole().setMedicalleave(medicalL);
+		role.setAnnualleave(annualL);
+		role.setMedicalleave(medicalL);
 		
 		String url = "/viewsubleave?managerId=" + subordinate.getManagerid();
 		
+		ManagerSvc mansvc = new ManagerSvc(leaveDetail.getEmployee().getManagerid(), allLeave, allEmployees);
+		ArrayList<Leavedetail> leaveinRange = mansvc.getLeaveinRange(leaveDetail);
+		
 		model.addAttribute("subordinate", subordinate);
+		model.addAttribute("role", role);
+		model.addAttribute("leaveinRange", leaveinRange);
 		model.addAttribute("leaveDetail", leaveDetail);
 		model.addAttribute("message", message);
 		model.addAttribute("url",url);

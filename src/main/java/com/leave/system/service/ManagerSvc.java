@@ -1,7 +1,7 @@
 package com.leave.system.service;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -32,11 +32,11 @@ public class ManagerSvc {
 //		mConsumed = 0;
 //	}
 	
-	public ManagerSvc(int managerId, ArrayList<Leavedetail> allLeave, ArrayList<Employee> allEmployees) {
+	public ManagerSvc(int managerId, List<Leavedetail> allLeave, List<Employee> allEmployees) {
 		super();
 		this.managerId = managerId;
-		this.allLeave = allLeave;
-		this.allEmployees = allEmployees;
+		this.allLeave = (ArrayList<Leavedetail>) allLeave;
+		this.allEmployees = (ArrayList<Employee>) allEmployees;
 		
 		for (Employee e: allEmployees) {
 			
