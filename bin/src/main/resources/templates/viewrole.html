@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-<title>All Employee</title>
+<title>view Roles </title>
 <th:block th:include="layout/header"></th:block>
 </head>
 <body>
@@ -20,33 +20,24 @@
 			</div>
 		</div>
 		<div class="col">
-		<h1>Edit Roles Detail</h1>
-		<form class="form-horizontal" th:object="${roles}"
-			th:action="${roles.id}" method="POST">
+		<h1>Role Details</h1>
+		<table class="table table-striped">
+		<tr>
+			<th>Id</th>
+			<th>Title</th>
+			<th>Annual Leave</th>
+			<th>Medical Leave</th>
+		</tr>
+		<tr th:each="role : ${roles}">
+			<td th:text="${role.id}"></td>
+			<td th:text="${role.title}"></td>
+			<td th:text="${role.annualleave}"></td>
+			<td th:text="${role.medicalleave}"></td>
 			
-			
-			<div class="form-group">
-				<input class="form-control"
-					type="hidden" id="id" th:field="*{id}">
-			</div>
-			
-			
-			<div class="form-group">
-				<label for="title">Title</label> <input class="form-control"
-					type="text" id="title" th:field="*{title}">
-			</div>
-
-			<div class="form-group">
-				<label for="al">Annual Leave</label> <input class="form-control"
-					type="number" id="al" th:field="*{annualleave}">
-			</div>
-
-			<div class="form-groupl">
-				<label for="ml">Medical Leave</label> <input class="form-control"
-					type="number" id="ml" th:field="*{medicalleave}">
-			</div>
-		<button class="btn btn-primary">Edit</button>
-		</form>
+			<td><a th:href="${'update/' + role.id}"
+					class="btn btn-primary">Edit</a></td>
+		</tr>
+		</table>
 		</div>
 	</div>
 </div>
@@ -62,6 +53,14 @@
 	});
 </script>
 
+
+
+
+
+
+	
+	
+	
 
 </body>
 </html>

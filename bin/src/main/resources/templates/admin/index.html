@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>All Employee</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
+
+<div class="container mt-5">
+	<!-- start of container -->
+	Welcome back Admin: <strong><span th:if="${username}"
+		th:text="${username}"></span> </strong>
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Admin Menu</p>
+			<div class="list-group">
+				<ul>
+					<li class="list-group-item active">View all employee</li>
+					<li class="list-group-item"><a href="/admin/employee/create">Add
+							new employee</a></li>
+					<li class="list-group-item"><a href="/admin/role/list">View
+							Role</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="col">
+			<div th:if="${not #lists.isEmpty(employees)}">
+				<h2>All Employee</h2>
+				<table class="table table-striped">
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>User ID</th>
+						<th>Roles</th>
+						<th>Manger name</th>
+						<th>Modify</th>
+					</tr>
+					<tr th:each="employee : ${employees}">
+						<td th:text="${employee.id}"></td>
+						<td th:text="${employee.name}">Name</td>
+						<td th:text="${employee.email}">Email</td>
+						<td th:text=${employee.userid}>UserID</td>
+						<td th:text=*{employee.role.title}></td>
+						<td
+							th:if="${#maps.containsKey(employeesManagers, __${employee.managerid}__)}"
+							th:text="${employeesManagers[__${employee.managerid}__].name}">Nothing
+							here</td>
+						<td
+							th:unless="${#maps.containsKey(employeesManagers, __${employee.managerid}__)}">Not
+							assigned</td>
+						<td><a th:href="${'update/' + employee.id}"
+							class="btn btn-outline-primary">Edit</a>
+							<button type="button" class="btn btn-outline-danger"
+								data-toggle="modal" data-target="#modal-warning"
+								th:attr="data-target='#modal-warning'+${employee.id }">
+								Delete</button></td>
+
+						<div class="modal modal-warning fade in" th:id="modal-warning+${employee.id}">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close"></button>
+										<h5 class="modal-title">
+											<i class="fas fa-trash-alt" style="color: red"></i>Delete
+											User
+										</h5>
+									</div>
+									<div class="modal-body">
+										<h3>Are you sure want to delete this Employee?</h3>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline pull-left"
+											data-dismiss="modal">Close</button>
+										<a type="button" class="btn btn-danger"
+											th:href="${'/admin/employee/delete/' + employee.id}"><i
+											class="fas fa-trash-alt"></i>&nbsp;Yes</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<nav aria-label="Pagination" th:if="${totalPages gt 0}">
+		<ul class="pagination justify-content-center font-weight-bold">
+			<li class="page-item" th:classappend="${page eq 0} ? 'disabled'">
+				<a class="page-link"
+				th:href="@{/admin/employee?page={id}(id=${page lt 2 ? 1 : page})}"
+				aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+					<span aria-hidden="true">&laquo;</span>
+			</a>
+			</li>
+			<li class="page-item" th:classappend="${i eq page + 1} ? 'active'"
+				th:each="i : ${#numbers.sequence( 1, totalPages, 1)}"><a
+				class="page-link" th:href="@{/admin/employee?page={id}(id=${i})}"
+				th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a></li>
+			<li class="page-item"
+				th:classappend="${page + 1 eq totalPages} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/admin/employee?page={id}(id=${page + 2})}"
+				aria-label="Next" title="Next Page" data-toggle="tooltip"> <span
+					aria-hidden="true">&raquo;</span>
+			</a></li>
+		</ul>
+	</nav>
+</div>
+<!-- end -->
+<script>
+	$(document).ready(function() {
+		setTimeout(function() {
+			$('#successMessage').fadeOut('slow');
+		}, 2000); // <-- time in milliseconds
+	});
+</script>
+
+
+</body>
+</html>

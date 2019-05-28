@@ -39,7 +39,10 @@ public class RoleController {
 	public String viewRole(Model model, HttpSession session) {
 		UserSession userSession = (UserSession) session.getAttribute("US");
 		if(userSession.getEmployee().getRole().getId() == 1) {
+			int userid = userSession.getEmployee().getId();
+			String id = "/role/update" + userid;
 			model.addAttribute("roles", repository.findAll());
+			model.addAttribute("uri", id);
 			return "viewrole";
 		}
 		return "redirect:/home/login";
@@ -58,7 +61,7 @@ public class RoleController {
 	}
 	
 	@RequestMapping(path = "/update/{id}", method = RequestMethod.POST)
-	public String saveRole(Role role) {
+	public String saveRole(Role role, @PathVariable(name = "id") Integer id) {
 		repository.saveRole(role);
 		return "redirect:/admin/role/list";
 

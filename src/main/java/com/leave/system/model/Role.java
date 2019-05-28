@@ -14,7 +14,6 @@ public class Role {
 	@Id
 	private int id;
 	private String title;
-	@NotEmpty(message = "You have insufficent leave")
 	private int annualleave;
 	private int medicalleave;
 //	@OneToMany(targetEntity = Employee.class, mappedBy = "role")

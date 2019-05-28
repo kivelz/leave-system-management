@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Modify leaveDetail Details</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+	<div class="container mt-5">
+		<form class="form-horizontal" th:object="${leavedetail}"
+			th:action="@{'/manager/leave/'+ ${leavedetail.id}}" method="POST">
+			<div class="row">
+			<input type="hidden" th:field=*{id}>;
+			<div class="form-group col">
+				<label>Start Date</label> 
+				<input class="form-control" type="date" th:field=*{startDate}>
+			</div>
+				<div class="form-group col">
+				<label>end Date</label>
+				 <input class="form-control" type="date" th:field=*{endDate}>
+			</div>
+			</div>
+			
+		
+			<div class="form-group">
+				<label>Reason</label>
+				 <input class="form-control" type="text" th:field=*{reason}>
+			</div>
+			<div class="form-group">
+				<label>Contact Details</label>
+				 <input class="form-control" type="text" th:field=*{contactDetail}>
+			</div>
+			<input type="hidden" th:field=*{status}>
+			<input type="hidden" th:field=*{employee}> 
+ 
+			<button class="btn btn-primary	">Submit</button>
+		</form>
+
+	</div>
+
+
+</body>
+</html>

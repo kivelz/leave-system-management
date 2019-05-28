@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Modify Employee Details</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+
+	<div class="container mt-5">
+		<!-- start of container -->
+		<div class="row">
+			<div class="col-md-3">
+				<p class="lead">Admin Menu</p>
+				<div class="list-group">
+					<ul>
+						<li class="list-group-item "><a href="/admin/employee/">View
+								all employee</a></li>
+						<li class="list-group-item"><a href="/admin/employee/create">Add new employee </a></li>
+						<li class="list-group-item"><a href="/admin/role/list">View
+								Role</a></li>
+								<li class="list-group-item active">Editing Employee <span th:text="${employee.name}"></span>
+							</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col">
+					<div class="col">
+							<h5 th:text="${employee.name}">Edit Employee</h5>
+							<hr>
+								<form class="form-horizontal" th:object="${employee}"
+									th:action=${employee.id} method="POST">
+									
+									<div class="form-group">
+										<div class="col-sm-10">
+											<input type="hidden" class="form-control" th:field="*{id}" />
+										</div>
+									</div>	
+								<div class="row">
+								<div class="col">
+								<fieldset class="form-group col">
+										<label for="name">Name :</label> <input class="form-control"
+											type="text" id="name" th:field=*{name}>
+												 <p style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+									</fieldset>
+								</div>
+								<div class="col">
+								
+									<fieldset class="form-group col">
+										<label for="email">Email :</label> <input class="form-control"
+											type="email" id="email" th:field=*{email}>
+												<p style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">invalid email</p>
+									</fieldset>
+								</div>		
+								</div>
+								<div class="row">
+								<div class="col">
+								<fieldset class="form-group col">
+										<label for="password">Password :</label> <input
+											class="form-control" type="text" id="password"
+											th:field="*{password}">
+											<p style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</p>
+									</fieldset>
+								</div>
+								<div class="col">
+								<fieldset class="form-group col">
+								<label for="userid">User Id</label>
+										<input class="form-control" type="text" id="userid"
+											th:field=*{userid}>
+									</fieldset>		
+										<p style="color:red" th:if="${#fields.hasErrors('userid')}" th:errors="*{userid}">Name Error</p>
+								</div>			
+								</div>
+								<div class="row">
+								<div class="col">
+								<fieldset class="form-group col">
+										<label for="role">Employee role : </label> <select
+											th:field="*{role.id}">
+											<option th:each="role : ${roles}" th:value="${role.id}"
+												th:text="${role.title}"></option>
+										</select>
+									</fieldset>
+								</div>
+								<div class="col">
+									<fieldset class="form-group col">
+										<label for="assignmanager">Assign Manager</label> <select th:field="*{managerid}">
+											<option th:each="emp : ${empWithRole}" th:value="${emp.id}"
+												th:text="${emp.name}"></option>
+										</select>
+									</fieldset>
+								</div>
+								</div>
+								<div class="row">
+								<div class="col-md-12">
+									<button class="btn btn-primary">Update</button>
+								</div>
+								</div>								
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+		
+	<!-- end -->
+
+	<script>
+		$(document).ready(function() {
+			setTimeout(function() {
+				$('#successMessage').fadeOut('fast');
+			}, 30000); // <-- time in milliseconds
+		});
+	</script>
+
+	<div class="container mt-5">
+		<!-- start of container -->
+
+	</div>
+	<!-- end -->
+
+</body>
+</html>
