@@ -38,15 +38,16 @@ public class LoginController {
 		Employee emp = adminService.authenticate(employee.getName(), employee.getPassword());
 		UserSession userSession = new UserSession();
 		userSession.setEmployee(emp);
+		int id = userSession.getEmployee().getId();
 		session.setAttribute("US", userSession);
 		if (emp.getRole().getId() == 1) {
 			return new ModelAndView("redirect:/admin/employee/");
 		} 
 		else if(emp.getRole().getId() == 2) {
-			return new ModelAndView("redirect:/manager/");
+			return new ModelAndView("redirect:/manager/viewsubleave?managerId="+ id);
 		}
 		else if(emp.getName() != null) {
-			return new ModelAndView("redirect:/staff/");
+			return new ModelAndView("redirect:/staff/history");
 		}
 		return mavAndView;
 	}

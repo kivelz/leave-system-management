@@ -8,10 +8,10 @@
 <div class="container mt-5">
 <table class="table table-striped">
 		<tr>
-			<td>Staff ID</td>
-			<td>Name</td>
-			<td>Balance Annual Leave</td>
-			<td>Balance Medical Leave</td>
+			<th>Staff ID</th>
+			<th>Name</th>
+			<th>Balance Annual Leave</th>
+			<th>Balance Medical Leave</th>
 		</tr>
 		<tr>
 			<td th:text="${subordinate.id}"></td>
@@ -23,15 +23,15 @@
 	<form th:object="${leaveDetail}" th:action="@{submitreview}" method="post">
 		<table class="table table-striped">
 			<tr>
-					<td>Leave ID</td>
-					<td>Start Date</td>
-					<td>End Date</td>
-					<td>Category</td>
-					<td>Reason</td>
-					<td>Contact Details</td>
-					<td>Status</td>
-					<td th:if="${leaveDetail.status} == 'Applied/Updated'">Review</td>
-					<td>Comment</td>
+					<th>Leave ID</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Category</th>
+					<th>Reason</th>
+					<th>Contact Details</th>
+					<th>Status</th>
+					<th th:if="${leaveDetail.status} == 'Applied/Updated'">Review</th>
+					<th>Comment</th>
 			<!--	<td th:text="${itrStat.index}">test</td> -->
 			</tr>
 					<tr>

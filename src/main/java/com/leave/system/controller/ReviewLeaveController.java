@@ -73,7 +73,7 @@ public class ReviewLeaveController {
 		UserSession userSession = (UserSession) session.getAttribute("US");
 		if(userSession.getEmployee().getRole().getId() == 2) {
 			model.addAttribute("Leaverecords", new LeaveRecords());
-			
+			String managername = userSession.getEmployee().getName();
 			List<Employee> allEmployees = empRepo.findAll();
 			ArrayList<Employee> subordinates = new ArrayList<Employee>();
 			List<Leavedetail> allLeave = lvRepo.findAll();
@@ -117,7 +117,7 @@ public class ReviewLeaveController {
 					subordinates.add(e);
 				}
 			}
-			
+			model.addAttribute("managername", managername);
 			model.addAttribute("subordinates", subordinates);
 			model.addAttribute("subleave", subLeave);
 			

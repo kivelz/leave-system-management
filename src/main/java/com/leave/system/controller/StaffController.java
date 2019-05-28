@@ -67,30 +67,13 @@ public class StaffController {
 
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public String createLeave(@Validated Leavedetail leavedetails, HttpSession session, BindingResult bindingResult,
-			Model model, RedirectAttributes redirectAttributes) {
-		UserSession userSession = (UserSession) session.getAttribute("US");
-		
-		List<Employee> allEmployees = eRepo.findAll();
-		List<Leavedetail> allLeave = lRepo.findAll();
-		
-		ManagerSvc mSvc = new ManagerSvc(leavedetails.getEmployee().getManagerid(),allLeave,allEmployees);
-		
-		Role role = mSvc.getRoleWBal(leavedetails.getEmployee());
-		Period period  = Period.between(leavedetails.getStartDate(), leavedetails.getEndDate());
-		
-		if(period.getDays() > role.getAnnualleave()) {
-			model.addAttribute("insufficent", "Insufficent leave" );
-			return "redirect:/staff/create";
-		}
+		Model model, RedirectAttributes redirectAttributes) {
+		UserSession userSession = (UserSession) session.getAttribute("US");	
 		
 		if (leavedetails.getStartDate() != null && leavedetails.getEndDate() != null) {
 			leavedetails.setStartDate(leavedetails.getStartDate().plusDays(1));
 			leavedetails.setEndDate(leavedetails.getEndDate().plusDays(1));
 		}	
-		
-		if (leavedetails.getStartDate() == null && leavedetails.getEndDate() == null) {
-			bindingResult.rejectValue("startDate", "error.leavedetails", "Start date cannot be empty");
-		}
 		if (leavedetails.getStartDate().isBefore(LocalDate.now())) {
 			bindingResult.rejectValue("startDate", "error.leavedetails", "*You cannot backdate your leave!");
 		}
@@ -109,7 +92,7 @@ public class StaffController {
 		leavedetails.setEmployee(userSession.getEmployee());
 
 		model.addAttribute("staffid", employee);
-		lRepo.saveAndFlush(leavedetails);
+		lRepo.save(leavedetails);
 
 		return "redirect:/staff/history";
 
@@ -123,13 +106,14 @@ public class StaffController {
 		String username = sess.getEmployee().getName();
 		List<Leavedetail> gethistory = lRepo.findAll();
 		
+		
 		for (Leavedetail leave : gethistory) {
-			if (leave.getEmployee().getId() == sess.getEmployee().getId() && !leave.getStatus().contentEquals("pending")) {
+			if (leave.getEmployee().getId() == sess.getEmployee().getId() &&  !leave.getStatus().contentEquals("Applied/Updated")) {
 				list.add(leave);
 			}
 		}
 		for(Leavedetail leave: gethistory) {
-			if(leave.getStatus().contentEquals("pending")) {
+			if(leave.getEmployee().getId() == sess.getEmployee().getId() && leave.getStatus().contentEquals("Applied/Updated")) {
 				pending.add(leave);
 			}
 		}
@@ -142,16 +126,40 @@ public class StaffController {
 	
 	@RequestMapping(path = "/leave/{id}", method = RequestMethod.GET)
 	public String EditLeaveDetails(Model model, @PathVariable(name = "id") Integer id) {
-		Leavedetail leavedetail = lRepo.findById(id).orElse(null);
+		Leavedetail leavedetail = lRepo.findById(id).orElse(null);	
 		model.addAttribute("leavedetail", leavedetail);
 		return "staff/editleavedetail";
 	}
 	
 	@RequestMapping(path = "/leave/{id}", method = RequestMethod.POST)
-	public String saveLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model) {
+	public String saveLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model, BindingResult bindingResult) {
+
+		if (leavedetail.getStartDate() != null && leavedetail.getEndDate() != null) {
+			leavedetail.setStartDate(leavedetail.getStartDate().plusDays(1));
+			leavedetail.setEndDate(leavedetail.getEndDate().plusDays(1));
+		}	
+		
+		if (leavedetail.getStartDate().isBefore(LocalDate.now())) {
+			bindingResult.rejectValue("startDate", "error.leavedetails", "*You cannot backdate your leave!");
+		}
+		if (leavedetail.getEndDate().isBefore(leavedetail.getStartDate())) {
+			bindingResult.rejectValue("endDate", "error.leavedetails", "*Your end date cannot be eariler than start date");
+		}
+
+		if (bindingResult.hasErrors()) {
+			return "staff/createleave";
+			
+		}
 		lRepo.save(leavedetail);
 		return "redirect:/staff/history";
 	}
+	
+	@RequestMapping(path = "/leave/delete/{id}", method = RequestMethod.GET)
+	public String deleteLeaveDetails(Leavedetail leavedetail,  @PathVariable(name = "id") Integer id, Model model) {
+		lRepo.delete(leavedetail);
+		return "redirect:/staff/history";
+	}
+	
     // Finding Employee on leave on given period
     @RequestMapping(path = "/leave/findleave", method = RequestMethod.GET)
     public String findEmpOnLeave(Model model) {
