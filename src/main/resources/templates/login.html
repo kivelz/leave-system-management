@@ -13,7 +13,7 @@
 	style="text-align: center" /></div>
 	<div class="container mt-5">
 
-		<h1>Edit Employee</h1>
+		<h1>Login</h1>
 		<form class="form-horizontal" th:object="${employee}"
 			th:action="@{authenticate}" method="POST">
 
@@ -32,7 +32,7 @@
 					type="text" id="password" th:field=*{password}>
 			</fieldset>
 
-			<button class="btn btn-primary">Update</button>
+			<button class="btn btn-primary">Login</button>
 		</form>
 	</div>
 	

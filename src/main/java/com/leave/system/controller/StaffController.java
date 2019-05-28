@@ -1,17 +1,20 @@
 package com.leave.system.controller;
 
 import java.time.LocalDate;
-
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +28,11 @@ import com.leave.system.model.Role;
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.LeaveRepository;
 import com.leave.system.service.ManagerSvc;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
+import ch.qos.logback.core.util.Duration;
 
 @Controller
 @RequestMapping("/staff")
@@ -32,6 +40,7 @@ import com.leave.system.service.ManagerSvc;
 public class StaffController {
 
 	private EmployeeRepository eRepo;
+	@Autowired
 	private LeaveRepository lRepo;
 	
 
@@ -67,8 +76,9 @@ public class StaffController {
 		ManagerSvc mSvc = new ManagerSvc(leavedetails.getEmployee().getManagerid(),allLeave,allEmployees);
 		
 		Role role = mSvc.getRoleWBal(leavedetails.getEmployee());
+		Period period  = Period.between(leavedetails.getStartDate(), leavedetails.getEndDate());
 		
-		if(role.getAnnualleave() > 14) {
+		if(period.getDays() > role.getAnnualleave()) {
 			model.addAttribute("insufficent", "Insufficent leave" );
 			return "redirect:/staff/create";
 		}
@@ -142,5 +152,46 @@ public class StaffController {
 		lRepo.save(leavedetail);
 		return "redirect:/staff/history";
 	}
+    // Finding Employee on leave on given period
+    @RequestMapping(path = "/leave/findleave", method = RequestMethod.GET)
+    public String findEmpOnLeave(Model model) {
+    	model.addAttribute("leaves", new Leavedetail());
+        return "findleave";
+    }
+    
+	
+    @RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
+    public String FindEmpOnLeave(Model model,Leavedetail leave) {
+    	List<Leavedetail> lea = lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),leave.getEndDate());
+    	for(Leavedetail l:lea) 
+	  	  { 
+	  		  System.out.println(l); 
+  		  } 
+    	model.addAttribute("leaves", lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),leave.getEndDate()));
+  	  	return  "leaves"; 
+    }
+  
+	//Export Products to CSV file
+    @GetMapping("/leave/export")
+    public void exportCSV(HttpServletResponse response) throws Exception {
+
+        //set file name and content type
+        String filename = "LeaveList.csv";
+
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+        //create a csv writer
+        StatefulBeanToCsv<Leavedetail> writer = new StatefulBeanToCsvBuilder<Leavedetail>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+
+        //leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
+               
+        //write all leavelist to csv file
+        writer.write(lRepo.findAll());
+    }
 
 }
