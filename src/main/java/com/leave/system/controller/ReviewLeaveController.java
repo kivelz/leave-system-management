@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.leave.system.repository.EmployeeRepository;
 import com.leave.system.repository.LeaveRepository;
 import com.leave.system.service.ManagerSvc;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.leave.system.javabean.UserSession;
 import com.leave.system.model.Employee;
 import com.leave.system.model.LeaveRecords;
@@ -311,6 +317,44 @@ public class ReviewLeaveController {
 		model.addAttribute(leaveObject);
 		
 		return "testform";
+	}
+	@RequestMapping(path = "/findleave", method = RequestMethod.GET)
+	public String findEmpOnLeave(Model model) {
+		model.addAttribute("leaves", new Leavedetail());
+		return "findleave";
+	}
+
+	@RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
+	public String FindEmpOnLeave(Model model, Leavedetail leave) {
+		List<Leavedetail> lea = lvRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),
+				leave.getEndDate());
+		for (Leavedetail l : lea) {
+			System.out.println(l);
+		}
+		model.addAttribute("leaves", lvRepo
+				.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
+		return "leaves";
+	}
+
+	// Export Products to CSV file
+	@GetMapping("/leave/export")
+	public void exportCSV(HttpServletResponse response) throws Exception {
+
+		// set file name and content type
+		String filename = "LeaveList.csv";
+
+		response.setContentType("text/csv");
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+		// create a csv writer
+		StatefulBeanToCsv<Leavedetail> writer = new StatefulBeanToCsvBuilder<Leavedetail>(response.getWriter())
+				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withOrderedResults(false).build();
+
+		// leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
+
+		// write all leavelist to csv file
+		writer.write(lvRepo.findAll());
 	}
 	
 }

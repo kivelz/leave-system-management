@@ -167,43 +167,6 @@ public class StaffController {
 	}
 
 	// Finding Employee on leave on given period
-	@RequestMapping(path = "/leave/findleave", method = RequestMethod.GET)
-	public String findEmpOnLeave(Model model) {
-		model.addAttribute("leaves", new Leavedetail());
-		return "findleave";
-	}
-
-	@RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
-	public String FindEmpOnLeave(Model model, Leavedetail leave) {
-		List<Leavedetail> lea = lRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),
-				leave.getEndDate());
-		for (Leavedetail l : lea) {
-			System.out.println(l);
-		}
-		model.addAttribute("leaves", lRepo
-				.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
-		return "leaves";
-	}
-
-	// Export Products to CSV file
-	@GetMapping("/leave/export")
-	public void exportCSV(HttpServletResponse response) throws Exception {
-
-		// set file name and content type
-		String filename = "LeaveList.csv";
-
-		response.setContentType("text/csv");
-		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
-
-		// create a csv writer
-		StatefulBeanToCsv<Leavedetail> writer = new StatefulBeanToCsvBuilder<Leavedetail>(response.getWriter())
-				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-				.withOrderedResults(false).build();
-
-		// leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
-
-		// write all leavelist to csv file
-		writer.write(lRepo.findAll());
-	}
+	
 
 }

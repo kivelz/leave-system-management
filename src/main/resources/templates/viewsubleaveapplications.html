@@ -6,70 +6,87 @@
 </head>
 <body>
 	<div class="container mt-5">
-		<div th:if="${#lists.isEmpty(subordinates)}">
-			<h3>No Records found</h3>
-		</div>
-		<div th:if="${not #lists.isEmpty(subordinates)}">
-			<h3>
-				<span th:text="${managername}"></span> Subordinates Leave
-			</h3>
-			<hr>
-			<div th:each="subordinate : ${subordinates}">
+		<div class="row">
+			<div class="col-md-3">
+				<p class="lead">Manager Menu</p>
+				<div class="list-group">
+					<ul>
+						<li class="list-group-item active">Subordinates Info</li>
+						<li class="list-group-item"><a href="/manager/findleave">Search
+								leave by date</a></li>
+						<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
 
-				<table class="table table-striped">
-					<tr>
-						<th>Staff ID</th>
-						<th>Name</th>
-						<th>Balance Annual Leave</th>
-						<th>Balance Medical Leave</th>
-						<th></th>
-						<th></th>
-					</tr>
-					<tr>
-						<td th:text="${subordinate.id}"></td>
-						<td th:text="${subordinate.name}"></td>
-						<td th:text="${subordinate.role.annualleave}"></td>
-						<td th:text="${subordinate.role.medicalleave}"></td>
-					</tr>
-				</table>
-				<br>
-				<div th:if="${#lists.isEmpty(subleave)}">
-					<h5>No records</h5>		
+					</ul>
+				</div>
+				</div>
+				<div class="col">
+					<div th:if="${#lists.isEmpty(subordinates)}">
+						<h3>No Records found</h3>
 					</div>
-				<div th:if="${not #lists.isEmpty(subleave)}">
-						<h4>Employee Leave Details</h4>
-				<table class="table table-striped">
-					<tr>
-						<th>Leave ID</th>
-						<th>Start Date</th>
-						<th>End Date</th>
-						<th>Category</th>
-						<th>Status</th>
-						<th>Details</th>
-						<!--	<td th:text="${itrStat.index}">test</td> -->
-					</tr>
-					
-					<tr th:each="Leavedetail : ${subleave}"
-						th:if="${subordinate.id} == ${Leavedetail.employee.id}">
-						<td th:text="${Leavedetail.id}"><input type="text"
-							th:field="*{Leavedetail.LeaveId}" readonly="readonly" />No records</td>
-						<td
-							th:text="${#temporals.format(Leavedetail.startDate, 'dd-MM-yyyy')}">Nil</td>
-						<td
-							th:text="${#temporals.format(Leavedetail.endDate, 'dd-MM-yyyy')}">Nil</td>
-						<td th:text="${Leavedetail.category}">Nil</td>
-						<td th:text="${Leavedetail.status}"></td>
-						<td><a
-							th:href="@{viewIndiLeaveDetails(leaveId=${Leavedetail.id})}">
-								Click here</a></td>
-					</tr>
-				</table>				
+					<div th:if="${not #lists.isEmpty(subordinates)}">
+						<h3>
+							<span th:text="${managername}"></span> Subordinates Leave
+						</h3>
+						<hr>
+						<div th:each="subordinate : ${subordinates}">
+
+							<table class="table table-striped">
+								<tr>
+									<th>Staff ID</th>
+									<th>Name</th>
+									<th>Balance Annual Leave</th>
+									<th>Balance Medical Leave</th>
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<td th:text="${subordinate.id}"></td>
+									<td th:text="${subordinate.name}"></td>
+									<td th:text="${subordinate.role.annualleave}"></td>
+									<td th:text="${subordinate.role.medicalleave}"></td>
+								</tr>
+							</table>
+							<br>
+							<div th:if="${#lists.isEmpty(subleave)}">
+								<h5>No records</h5>
+							</div>
+							<div th:if="${not #lists.isEmpty(subleave)}">
+								<h4>Employee Leave Details</h4>
+								<table class="table table-striped">
+									<tr>
+										<th>Leave ID</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Category</th>
+										<th>Status</th>
+										<th>Details</th>
+										<!--	<td th:text="${itrStat.index}">test</td> -->
+									</tr>
+
+									<tr th:each="Leavedetail : ${subleave}"
+										th:if="${subordinate.id} == ${Leavedetail.employee.id}">
+										<td th:text="${Leavedetail.id}"><input type="text"
+											th:field="*{Leavedetail.LeaveId}" readonly="readonly" />No
+											records</td>
+										<td
+											th:text="${#temporals.format(Leavedetail.startDate, 'dd-MM-yyyy')}">Nil</td>
+										<td
+											th:text="${#temporals.format(Leavedetail.endDate, 'dd-MM-yyyy')}">Nil</td>
+										<td th:text="${Leavedetail.category}">Nil</td>
+										<td th:text="${Leavedetail.status}"></td>
+										<td><a
+											th:href="@{viewIndiLeaveDetails(leaveId=${Leavedetail.id})}">
+												Click here</a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
-
-			<br /> <br /> <br />
 		</div>
-	</div>
+
 </body>
 </html>
 
