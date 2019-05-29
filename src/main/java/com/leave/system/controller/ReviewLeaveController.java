@@ -301,33 +301,6 @@ public class ReviewLeaveController {
 		return "redirect:/viewsubleave";
 	}
 	
-	
-	
-	
-	//Route test
-	@RequestMapping(path="/testpage", method = RequestMethod.GET)
-	public String test() {
-		return "viewLeaveApplications";
-	}
-	
-	
-	//Controller Redirect Test
-	@RequestMapping(path="/testred", method = RequestMethod.GET)
-	public String testred(RedirectAttributes redirectA) {
-		
-		int val = 1;
-		redirectA.addAttribute("managerId", val);
-		return "redirect:/viewsubleave";
-	}
-	
-	@RequestMapping(path="/testform", method = RequestMethod.GET)
-	public String TestForm(Model model) {
-		
-		Leavedetail leaveObject = new Leavedetail();
-		model.addAttribute(leaveObject);
-		
-		return "testform";
-	}
 	@RequestMapping(path = "/findleave", method = RequestMethod.GET)
 	public String findEmpOnLeave(HttpSession session, Model model,RedirectAttributes redirectAttributes) {
 		UserSession us = (UserSession) session.getAttribute("US"); 
