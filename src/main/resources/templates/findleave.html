@@ -2,12 +2,44 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
+<th:block th:include="layout/header"></th:block>
 <title>Find Employees on Leave - LAPS</title>
 </head>
-<h1>Search Form</h1>
-    <form th:action="@{/staff/EmpOnLeave}" th:object="${leaves}" method="get">
-    	<p>Start Date: <input type="date" th:field="*{startDate}" /></p>
-        <p>End Date	 : <input type="date" th:field="*{endDate}" /></p>
-        <p><input type="submit" value="Find" /></p>
-    </form>
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Manager Menu</p>
+			<div class="list-group">
+				<ul>
+			
+					<li class="list-group-item"><a th:href="@{'/manager/viewsubleave?managerId='+${id}}">Subordinates Info</a></li>
+					<li class="list-group-item active"><a href="/manager/findleave">Search
+							leave by date</a></li>
+					<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<div class="col">
+			<h1>Filter employee leave</h1>
+			<form th:action="@{/manager/EmpOnLeave}" th:object="${leaves}"
+				method="get">
+				<div class="row">
+					<div class="form-group col">
+						<label for="form-control">Start Date:</label> <input
+							class="form-control" type="date" th:field="*{startDate}" />
+					</div>
+					<div class="form-group col">
+						<label for="endate">End Date :</label> <input class="form-control"
+							type="date" th:field="*{endDate}" />
+					</div>
+				</div>
+
+				<input class="form-control btn btn-primary" type="submit" value="Find" />
+
+			</form>
+		</div>
+	</div>
+</div>
+
 </html>

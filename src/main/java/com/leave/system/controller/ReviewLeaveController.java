@@ -135,55 +135,59 @@ public class ReviewLeaveController {
 	
 	
 	@RequestMapping(path="/viewIndiLeaveDetails", method = RequestMethod.GET)
-	public String LeaveDetails(Integer leaveId, Model model, String message) {
-		
-		String msg = message;
-		
-		Leavedetail leave = lvRepo.findById(leaveId).orElse(null);
-		Employee subordinate = empRepo.findById(leave.getEmployee().getId()).get();
-		
-		List<Leavedetail> allLeave = lvRepo.findAll();
+	public String LeaveDetails(Integer leaveId, Model model, String message, HttpSession session, RedirectAttributes redirectAttributes) {
+		UserSession us =(UserSession) session.getAttribute("US");
+		if(us.getEmployee().getRole().getId() == 2) {
+			String msg = message;
+			
+			Leavedetail leave = lvRepo.findById(leaveId).orElse(null);
+			Employee subordinate = empRepo.findById(leave.getEmployee().getId()).get();
+			
+			List<Leavedetail> allLeave = lvRepo.findAll();
 
-		int annualL = 0;
-		int medicalL = 0;
-		int aConsumed = 0;
-		int mConsumed = 0;
+			int annualL = 0;
+			int medicalL = 0;
+			int aConsumed = 0;
+			int mConsumed = 0;
 
-		for (Leavedetail l: allLeave) {
-			if (subordinate.getId() == l.getEmployee().getId()) {
-				
-				if(l.getStatus().equals("Approved")) {
+			for (Leavedetail l: allLeave) {
+				if (subordinate.getId() == l.getEmployee().getId()) {
 					
-					if (l.getCategory().equals("Annual Leave")) {
-						aConsumed = aConsumed + 1;
+					if(l.getStatus().equals("Approved")) {
+						
+						if (l.getCategory().equals("Annual Leave")) {
+							aConsumed = aConsumed + 1;
+						}
+						else if(l.getCategory().equals("Medical Leave")) {
+							mConsumed = mConsumed +1;
+						}
+					
+						annualL = subordinate.getRole().getAnnualleave();
+						medicalL = subordinate.getRole().getMedicalleave();
+						annualL = annualL - aConsumed;
+						medicalL = medicalL - mConsumed;
 					}
-					else if(l.getCategory().equals("Medical Leave")) {
-						mConsumed = mConsumed +1;
-					}
-				
-					annualL = subordinate.getRole().getAnnualleave();
-					medicalL = subordinate.getRole().getMedicalleave();
-					annualL = annualL - aConsumed;
-					medicalL = medicalL - mConsumed;
 				}
 			}
+			
+			Role role = subordinate.getRole();
+			role.setAnnualleave(annualL);
+			role.setMedicalleave(medicalL);
+			
+			model.addAttribute("role", role);
+			model.addAttribute("subordinate", subordinate);
+			model.addAttribute("leaveDetail", leave);
+			model.addAttribute("message", msg);
+			
+			return "individualLeaveDetails";
 		}
-		
-		Role role = subordinate.getRole();
-		role.setAnnualleave(annualL);
-		role.setMedicalleave(medicalL);
-		
-		model.addAttribute("role", role);
-		model.addAttribute("subordinate", subordinate);
-		model.addAttribute("leaveDetail", leave);
-		model.addAttribute("message", msg);
-		
-		return "individualLeaveDetails";
+		redirectAttributes.addFlashAttribute("message", "You have successfully logged out");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		return "redirect:/home/login";
 	}
 	
 	@RequestMapping(path="/submitreview", method = RequestMethod.POST)
 	public String SubmitReview(Leavedetail leaveDetail,Model model,RedirectAttributes redirectA) {
-		
 		Employee subordinate = empRepo.findById(leaveDetail.getEmployee().getId()).get();
 		String message = new String();
 		Role role = new Role();
@@ -319,21 +323,30 @@ public class ReviewLeaveController {
 		return "testform";
 	}
 	@RequestMapping(path = "/findleave", method = RequestMethod.GET)
-	public String findEmpOnLeave(Model model) {
+	public String findEmpOnLeave(HttpSession session, Model model) {
+		UserSession us = (UserSession) session.getAttribute("US"); 
+		int id = us.getEmployee().getId();
+		model.addAttribute("id", id);
 		model.addAttribute("leaves", new Leavedetail());
 		return "findleave";
 	}
 
 	@RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
-	public String FindEmpOnLeave(Model model, Leavedetail leave) {
-		List<Leavedetail> lea = lvRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),
-				leave.getEndDate());
-		for (Leavedetail l : lea) {
-			System.out.println(l);
+	public String FindEmpOnLeave(HttpSession session, Model model, Leavedetail leave) {
+		UserSession us = (UserSession) session.getAttribute("US");
+		int id = us.getEmployee().getId();
+		if(us.getEmployee().getRole().getId() == 2) {
+			List<Leavedetail> lea = lvRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(),
+					leave.getEndDate());
+			for (Leavedetail l : lea) {
+				System.out.println(l);
+			}
+			model.addAttribute("id", id);
+			model.addAttribute("leaves", lvRepo
+					.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
+			return "leaves";
 		}
-		model.addAttribute("leaves", lvRepo
-				.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
-		return "leaves";
+		return "redirect:/home/login";
 	}
 
 	// Export Products to CSV file
@@ -351,9 +364,6 @@ public class ReviewLeaveController {
 				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
 				.withOrderedResults(false).build();
 
-		// leaveRepository.findAll(new Sort(Sort.Direction.DESC, "id"));
-
-		// write all leavelist to csv file
 		writer.write(lvRepo.findAll());
 	}
 	

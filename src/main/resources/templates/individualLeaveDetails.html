@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-<title>view Roles </title>
+<title>view Roles</title>
 <th:block th:include="layout/header"></th:block>
 </head>
 <body>
-<div class="container mt-5">
-<table class="table table-striped">
-		<tr>
-			<th>Staff ID</th>
-			<th>Name</th>
-			<th>Balance Annual Leave</th>
-			<th>Balance Medical Leave</th>
-		</tr>
-		<tr>
-			<td th:text="${subordinate.id}"></td>
-			<td th:text="${subordinate.name}"></td>
-			<td th:text="${role.annualleave}"></td>
-			<td th:text="${role.medicalleave}"></td>
-		</tr>
-		 </table>
-	<form th:object="${leaveDetail}" th:action="@{submitreview}" method="post">
+	<div class="container mt-5">
 		<table class="table table-striped">
 			<tr>
+				<th>Staff ID</th>
+				<th>Name</th>
+				<th>Balance Annual Leave</th>
+				<th>Balance Medical Leave</th>
+			</tr>
+			<tr>
+				<td th:text="${subordinate.id}"></td>
+				<td th:text="${subordinate.name}"></td>
+				<td th:text="${role.annualleave}"></td>
+				<td th:text="${role.medicalleave}"></td>
+			</tr>
+		</table>
+		<form th:object="${leaveDetail}" th:action="@{/manager/submitreview}"
+			method="post">
+			<table class="table table-striped">
+				<tr>
 					<th>Leave ID</th>
 					<th>Start Date</th>
 					<th>End Date</th>
@@ -32,53 +33,59 @@
 					<th>Status</th>
 					<th th:if="${leaveDetail.status} == 'Applied/Updated'">Review</th>
 					<th>Comment</th>
-			<!--	<td th:text="${itrStat.index}">test</td> -->
-			</tr>
-					<tr>
-							<td th:text="${leaveDetail.id}"></td>
-							<td th:text="${#temporals.format(leaveDetail.startDate, 'dd-MM-yyyy')}"></td>
-							<td th:text="${#temporals.format(leaveDetail.endDate, 'dd-MM-yyyy')}">Nil</td>
-							<td th:text="${leaveDetail.category}">Nil</td>
-							<td th:text="${leaveDetail.reason}">Nil</td>
-							<td th:text="${leaveDetail.contactDetail}"></td>
-							<td th:text="${leaveDetail.status}"></td>
-							
-							<td th:if="${leaveDetail.status} == 'Applied/Updated'">
-							<input type="radio" th:field="*{status}" th:text="Approve" th:value="Approved" /><br>
-							<input type="radio" th:field="*{status}" th:text="Reject" th:value="Rejected" /><br>
-							</td>
-							
-							<td th:if="${leaveDetail.status} != 'Applied/Updated' AND ${leaveDetail.comment} != null" th:text="${leaveDetail.comment}" >-</td>
-							<td th:if="${leaveDetail.status} == 'Applied/Updated'">
-							<input type="text" th:field="*{comment}"/>
-							</td>
-					</tr>
+					<!--	<td th:text="${itrStat.index}">test</td> -->
+				</tr>
+				<tr>
+					<td th:text="${leaveDetail.id}"></td>
+					<td
+						th:text="${#temporals.format(leaveDetail.startDate, 'dd-MM-yyyy')}"></td>
+					<td
+						th:text="${#temporals.format(leaveDetail.endDate, 'dd-MM-yyyy')}">Nil</td>
+					<td th:text="${leaveDetail.category}">Nil</td>
+					<td th:text="${leaveDetail.reason}">Nil</td>
+					<td th:text="${leaveDetail.contactDetail}"></td>
+					<td th:text="${leaveDetail.status}"></td>
+
+					<td th:if="${leaveDetail.status} == 'Applied/Updated'"><input
+						type="radio" th:field="*{status}" th:text="Approve"
+						th:value="Approved" /><br> <input type="radio"
+						th:field="*{status}" th:text="Reject" th:value="Rejected" /><br>
+					</td>
+
+					<td
+						th:if="${leaveDetail.status} != 'Applied/Updated' AND ${leaveDetail.comment} != null"
+						th:text="${leaveDetail.comment}">-</td>
+					<td th:if="${leaveDetail.status} == 'Applied/Updated'"><input
+						type="text" th:field="*{comment}" /></td>
+				</tr>
 			</table>
 			<p>
-			<input type="hidden" th:field="*{id}"/>
-			<input type="hidden" th:field="*{startDate}"/>
-			<input type="hidden" th:field="*{endDate}"/>
-			<input type="hidden" th:field="*{category}"/>
-			<input type="hidden" th:field="*{reason}"/>
-			<input type="hidden" th:field="*{contactDetail}"/>
-			<input type="hidden" th:field="*{employee}"/>
+				<input type="hidden" th:field="*{id}" /> <input type="hidden"
+					th:field="*{startDate}" /> <input type="hidden"
+					th:field="*{endDate}" /> <input type="hidden"
+					th:field="*{category}" /> <input type="hidden" th:field="*{reason}" />
+				<input type="hidden" th:field="*{contactDetail}" /> <input
+					type="hidden" th:field="*{employee}" />
 			<p>
-			
-			<p th:if="${leaveDetail.status} == 'Applied/Updated'"><input type="submit" value="Submit" class="btn btn-primary"/>
-			 <input class="btn btn-warning" type="reset" value="Reset" /></p>
-			</form>
-			
-			
-			
-	
-	<p th:if="${message} != null" th:text="${message}"></p>
-	<h5> Leave Applications in same period</h5>
-
-<p th:if="${leaveinRange} == null"> No overlapping leave applications for this leave application</p>
-</div>
+			<p th:if="${leaveDetail.status} == 'Applied/Updated'">
+				<input type="submit" value="Submit" class="btn btn-primary" /> <input
+					class="btn btn-warning" type="reset" value="Reset" />
+			</p>
+		</form>
 
 
-<div th:if="${leaveinRange} != null" th:each="subordinate : ${subordinates}">
+
+
+		<p th:if="${message} != null" th:text="${message}"></p>
+		<h5>Leave Applications in same period</h5>
+
+		<p th:if="${leaveinRange} == null">No overlapping leave
+			applications for this leave application</p>
+	</div>
+
+
+	<div th:if="${leaveinRange} != null"
+		th:each="subordinate : ${subordinates}">
 		<table class="table table-striped">
 			<tr>
 				<td>Staff ID</td>
@@ -114,13 +121,11 @@
 				<td th:text="${Leavedetail.status}"></td>
 			</tr>
 		</table>
-		<br />
-		<br />
-		<br />
+		<br /> <br /> <br />
 
 	</div>
 
-	
+
 
 </body>
 </html>
