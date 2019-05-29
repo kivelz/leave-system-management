@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.leave.system.javabean.UserSession;
@@ -32,6 +32,12 @@ public class LoginController {
 	public String Login(Model model, Employee employee) {
 		model.addAttribute("employee", new Employee());
 		return "login";
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logout(@SessionAttribute HttpSession session) {
+		session.invalidate();
+		return "redirect:/home/login";
 	}
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)

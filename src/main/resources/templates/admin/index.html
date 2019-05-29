@@ -23,6 +23,8 @@
 							new employee</a></li>
 					<li class="list-group-item"><a href="/admin/role/list">View
 							Role</a></li>
+					<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+
 				</ul>
 			</div>
 		</div>
@@ -59,7 +61,8 @@
 								th:attr="data-target='#modal-warning'+${employee.id }">
 								Delete</button></td>
 
-						<div class="modal modal-warning fade in" th:id="modal-warning+${employee.id}">
+						<div class="modal modal-warning fade in"
+							th:id="modal-warning+${employee.id}">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">

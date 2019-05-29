@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,6 +47,16 @@ public class AdminController {
 		binder.addValidators(new EmployeeValidator());
 	}
 
+	@RequestMapping(value = "/logout")
+	public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+		session.invalidate();
+		redirectAttributes.addFlashAttribute("message", "You have successfully logged out");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+		return "redirect:/home/login";
+	}
+	
+	
+	
 	// get method for viewing all employee
 	@RequestMapping(value = "/**", method = RequestMethod.GET)
 	public String viewEmployee(HttpServletRequest request, HttpSession session, Model model) {
