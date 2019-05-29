@@ -131,7 +131,7 @@ public class ReviewLeaveController {
 			model.addAttribute("subordinates", subordinates);
 			model.addAttribute("subleave", subLeave);
 			
-			return "viewSubLeaveApplications";
+			return "manager/viewSubLeaveApplications";
 		}
 		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
