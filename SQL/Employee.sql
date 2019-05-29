@@ -31,19 +31,19 @@ CREATE TABLE `leavemanagement`.leavedetail (
 PRIMARY KEY(leaveid));
 
 
-INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('1','Manager', '24', '60');
-INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('2','Admin', '14', '60');
+INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('1','Admin', '14', '60');
+INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('2','Manager', '24', '60');
 INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('3','Staff', '16', '60');
  
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('1', 'manly007@company.com', '8','Manly Man Men', '12345678','manly007','1');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('1', 'manly007@company.com', '8','Manly Man Men', '12345678','manly007','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('2', 'man2@company.com', '1','Manly2', '12345678','man2','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('3', 'mental3@company.com', '1','Mantal Mental', '12345678','Mental3','3');
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('4', 'women4@company.com', '8','Woman Womb Women', '12345678','women4','1');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('4', 'women4@company.com', '8','Woman Womb Women', '12345678','women4','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('5', 'worn5@company.com', '4','Worn Woe Wot', '12345678','worn5','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('6', 'wilhemina6@company.com', '4','Wilhemina Willyou', '12345678','wilhemina6','3');
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('7', 'sysedmin@company.com', '8','Edison Da Edmin', '12345678','edmin','2');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('7', 'sysedmin@company.com', '8','Edison Da Edmin', '12345678','edmin','1');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `name`, `password`, `userid`, `role_id`) VALUES ('8', 'ceo@company.com','Big Boss', '12345678','SeeEeeOoo','2');
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('9', 'etan@company.com', '8','Esther Tan', '12345678','etan','1');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('9', 'etan@company.com', '8','Esther Tan', '12345678','etan','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('10', 'yk@company.com', '9','Tan Yuen Kwan', '12345678','yuenkwan','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('11', 'tk@company.com', '9','Yuen Tan Kwan', '12345678','tankwan','3');
 
