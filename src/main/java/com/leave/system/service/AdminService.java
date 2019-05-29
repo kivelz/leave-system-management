@@ -30,8 +30,8 @@ public class AdminService implements AdminServiceIF {
 	
 	@Override
 	public Employee authenticate(String userid, String password) {
-		List<Employee> eList = eRepository.findByUseridAndPassword(userid, password);
-		return eList.get(0);	
+		Employee eList = eRepository.findByUseridAndPassword(userid, password);
+		return eList;	
 	}
 	
 	@Override

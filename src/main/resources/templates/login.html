@@ -12,6 +12,9 @@
 	th:class="${'alert ' + alertClass}" id="successMessage"
 	style="text-align: center" /></div>
 	<div class="container mt-5">
+	
+<div class="alert-danger" th:if="${error}" th:text="${error}"></div>
+
 
 		<h1>Login</h1>
 		<form class="form-horizontal" th:object="${employee}"
