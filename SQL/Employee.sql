@@ -3,10 +3,11 @@ DROP TABLE IF EXISTS ROLE;
 DROP TABLE IF EXISTS LEAVEDETAIL;
 
 CREATE TABLE `leavemanagement`.employee (
-`id` varchar(100) NOT NULL,
+`id` INTEGER NOT NULL AUTO_INCREMENT,
 `name` varchar(100) NOT NULL,
 `email` varchar(100) NOT NULL,
 `userid` varchar(100) NOT null,
+`password` varchar(100) NOT null,
 `managerid` varchar(100) NULL,
 `role_id` integer NULL,
 PRIMARY KEY(id));
@@ -19,16 +20,16 @@ CREATE TABLE `leavemanagement`.role (
 PRIMARY KEY(id));
                     
 CREATE TABLE `leavemanagement`.leavedetail (
-`leaveid` integer NOT NULL,
+`id` integer NOT NULL AUTO_INCREMENT,
 `category` varchar(255) NULL,
 `comment` varchar(255) NULL,
-`contact_details` varchar(255) NULL,
-`end_date` datetime NULL,
+`contact_detail` varchar(255) NULL,
+`end_date` date NULL,
 `reason` varchar(255) NULL,
-`start_date` datetime NULL,
+`start_date` date NULL,
 `status` varchar(255) NULL,
 `staff_id` integer NULL,
-PRIMARY KEY(leaveid));
+PRIMARY KEY(id));
 
 
 INSERT INTO `leavemanagement`.`role` (`id`,`title`,`annualleave`, `medicalleave`) VALUES ('1','Admin', '14', '60');
@@ -42,7 +43,7 @@ INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `pa
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('5', 'worn5@company.com', '4','Worn Woe Wot', '12345678','worn5','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('6', 'wilhemina6@company.com', '4','Wilhemina Willyou', '12345678','wilhemina6','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('7', 'sysedmin@company.com', '8','Edison Da Edmin', '12345678','edmin','1');
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `name`, `password`, `userid`, `role_id`) VALUES ('8', 'ceo@company.com','Big Boss', '12345678','SeeEeeOoo','2');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('8', 'ceo@company.com',null, 'Big Boss',  '12345678','SeeEeeOoo','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('9', 'etan@company.com', '8','Esther Tan', '12345678','etan','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('10', 'yk@company.com', '9','Tan Yuen Kwan', '12345678','yuenkwan','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('11', 'tk@company.com', '9','Yuen Tan Kwan', '12345678','tankwan','3');
