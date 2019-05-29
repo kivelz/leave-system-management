@@ -7,39 +7,56 @@
 </head>
 <body>
 
-<div class="container">
-    <div th:if="${not #lists.isEmpty(leaves)}">
-        <h2>All Leave Applications</h2>
-        <table class="table table-striped" >
-            <tr>
-                <th>Application No.</th>
-                <th>Emp ID</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Category</th>
-                <th>Reason</th>
-                <th>Contact</th>
-                <th>Status</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            <tr th:each="leave : ${leaves}">
-                <td th:text="${leave.id}">Application ID</td>
-     			<td th:text="${leave.employee.getId()}">Emp ID</td>
-                <td th:text="${leave.startDate}">Start Date</td>
-                <td th:text="${leave.endDate}">End Date</td>
-                <td th:text="${leave.category}">Category</td>
-                <td th:text="${leave.reason}">Reason</td>
-                <td th:text="${leave.contactDetail}">Contact</td>
-                <td th:text="${leave.status}">Status</td>
-                <td> <a th:href="${'/staff/leave/' + leave.id}">Edit</a>
-                <td> <a th:href="${'/staff/leave/delete/'+leave.id}">Delete</a>
-            </tr>
-        </table>
-        
-        <a th:href="${'/manager/leave/export/'}">Print CSV</a>
-      
-    </div>
-</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<p class="lead">Manager Menu</p>
+				<div class="list-group">
+					<ul>
+						<li class="list-group-item "><a
+							th:href="@{'/manager/viewsubleave?managerId='+${id}}">Subordinates
+								Info</a></li>
+						<li class="list-group-item"><a href="/manager/findleave">Search
+								leave by date</a></li>
+						<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+						<li class="list-group-item active">Leave Applications</li>
+					</ul>
+				</div>
+				</div>
+				<div th:if="${not #lists.isEmpty(leaves)} " class="col">
+					<h2>All Leave Applications</h2>
+					<table class="table table-striped">
+						<tr>
+							<th>Application No.</th>
+							<th>Emp ID</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Category</th>
+							<th>Reason</th>
+							<th>Contact</th>
+							<th>Status</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+						<tr th:each="leave : ${leaves}">
+							<td th:text="${leave.id}">Application ID</td>
+							<td th:text="${leave.employee.getId()}">Emp ID</td>
+							<td th:text="${leave.startDate}">Start Date</td>
+							<td th:text="${leave.endDate}">End Date</td>
+							<td th:text="${leave.category}">Category</td>
+							<td th:text="${leave.reason}">Reason</td>
+							<td th:text="${leave.contactDetail}">Contact</td>
+							<td th:text="${leave.status}">Status</td>
+							<td><a th:href="${'/staff/leave/' + leave.id}">Edit</a>
+							<td><a th:href="${'/staff/leave/delete/'+leave.id}">Delete</a>
+						</tr>
+					</table>
+
+					<a th:href="${'/manager/leave/export/'}">Print CSV</a>
+
+				</div>
+		</div> <!-- end row -->
+
+	</div><!-- end container -->
 </body>
 </html>

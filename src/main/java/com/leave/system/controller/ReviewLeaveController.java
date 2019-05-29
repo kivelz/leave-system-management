@@ -338,8 +338,7 @@ public class ReviewLeaveController {
 	// Export Products to CSV file
 	@GetMapping("/leave/export")
 	public void exportCSV(HttpServletResponse response) throws Exception {
-
-		// set file name and content type
+		
 		String filename = "LeaveList.csv";
 
 		response.setContentType("text/csv");
