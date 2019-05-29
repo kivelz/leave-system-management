@@ -185,7 +185,7 @@ public class ReviewLeaveController {
 			model.addAttribute("leaveDetail", leave);
 			model.addAttribute("message", msg);
 			
-			return "individualLeaveDetails";
+			return "manager/individualLeaveDetails";
 		}
 		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
@@ -274,7 +274,7 @@ public class ReviewLeaveController {
 		
 		int val = leaveDetail.getId();
 		model.addAttribute("leaveId", val);
-		return "individualLeaveDetails";
+		return "manager/individualLeaveDetails";
 	}
 	
 	@RequestMapping(path="/returnSubLeave", method = RequestMethod.POST)
@@ -308,7 +308,7 @@ public class ReviewLeaveController {
 			int id = us.getEmployee().getId();
 			model.addAttribute("id", id);
 			model.addAttribute("leaves", new Leavedetail());
-			return "findleave";
+			return "manager/findleave";
 		}
 		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
@@ -328,7 +328,7 @@ public class ReviewLeaveController {
 			model.addAttribute("id", id);
 			model.addAttribute("leaves", lvRepo
 					.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
-			return "leaves";
+			return "manager/leaves";
 		}
 		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
