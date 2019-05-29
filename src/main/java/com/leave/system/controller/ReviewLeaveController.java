@@ -52,13 +52,17 @@ public class ReviewLeaveController {
 	}
 	
 	@RequestMapping(path = "/", method = RequestMethod.GET)
-	  public String leavePage(HttpServletRequest request, Model model, HttpSession session) {
+	  public String leavePage(HttpServletRequest request, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 	        
 		UserSession us = (UserSession) session.getAttribute("US");
-		String url = "/manager/viewsubLeave?managerId" + us.getEmployee().getId();
-		
-		model.addAttribute("url1", url);
-	        return "leave/leave";
+		if(us.getEmployee().getRole().getId() == 2) {
+			String url = "/manager/viewsubLeave?managerId" + us.getEmployee().getId();	
+			model.addAttribute("url1", url);
+		        return "leave/leave";	        	
+		}
+	   	redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+			return "redirect:/home/login";
 	    }
 	
 	@RequestMapping(path = "/leave/{id}", method = RequestMethod.GET)
@@ -75,7 +79,7 @@ public class ReviewLeaveController {
 	}
 	
 	@RequestMapping(path="/viewsubleave", params = "managerId" ,method = RequestMethod.GET)
-	public String ViewApplications(HttpSession session, @RequestParam("managerId") int managerId, Model model) {
+	public String ViewApplications(HttpSession session, @RequestParam("managerId") int managerId, Model model, RedirectAttributes redirectAttributes) {
 		UserSession userSession = (UserSession) session.getAttribute("US");
 		if(userSession.getEmployee().getRole().getId() == 2) {
 			model.addAttribute("Leaverecords", new LeaveRecords());
@@ -129,6 +133,8 @@ public class ReviewLeaveController {
 			
 			return "viewSubLeaveApplications";
 		}
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 			return "redirect:/home/login";
 	}
 	
@@ -181,7 +187,7 @@ public class ReviewLeaveController {
 			
 			return "individualLeaveDetails";
 		}
-		redirectAttributes.addFlashAttribute("message", "You have successfully logged out");
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
 		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		return "redirect:/home/login";
 	}
@@ -323,16 +329,21 @@ public class ReviewLeaveController {
 		return "testform";
 	}
 	@RequestMapping(path = "/findleave", method = RequestMethod.GET)
-	public String findEmpOnLeave(HttpSession session, Model model) {
+	public String findEmpOnLeave(HttpSession session, Model model,RedirectAttributes redirectAttributes) {
 		UserSession us = (UserSession) session.getAttribute("US"); 
-		int id = us.getEmployee().getId();
-		model.addAttribute("id", id);
-		model.addAttribute("leaves", new Leavedetail());
-		return "findleave";
+		if(us.getEmployee().getRole().getId() == 2) {
+			int id = us.getEmployee().getId();
+			model.addAttribute("id", id);
+			model.addAttribute("leaves", new Leavedetail());
+			return "findleave";
+		}
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		return "redirect:/home/login";
 	}
 
 	@RequestMapping(path = "/EmpOnLeave", method = RequestMethod.GET)
-	public String FindEmpOnLeave(HttpSession session, Model model, Leavedetail leave) {
+	public String FindEmpOnLeave(HttpSession session, Model model, Leavedetail leave, RedirectAttributes redirectAttributes) {
 		UserSession us = (UserSession) session.getAttribute("US");
 		int id = us.getEmployee().getId();
 		if(us.getEmployee().getRole().getId() == 2) {
@@ -346,6 +357,8 @@ public class ReviewLeaveController {
 					.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(leave.getStartDate(), leave.getEndDate()));
 			return "leaves";
 		}
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
 		return "redirect:/home/login";
 	}
 
