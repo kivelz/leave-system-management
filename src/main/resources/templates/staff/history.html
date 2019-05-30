@@ -24,8 +24,9 @@
 			</div>
 		</div>
 		<div class="col">
-			<h5>
-				Leave History for <span th:text=${username}></span>
+			<div th:if="${not #lists.isEmpty(pending)}">
+		<h5>
+				Pending Leave for <span th:text=${username}></span>
 			</h5>
 			<table class="table table-striped">
 				<tr>
@@ -47,7 +48,10 @@
 						th:href="${'/staff/leave/delete/' + hist.id}">Delete</a></td>
 				</tr>
 			</table>
+		</div>
+
 			<div th:if="${not #lists.isEmpty(history)}">
+						<h5>Leave History for <span th:text="${username}"></span></h5>
 				<table class="table table-striped">
 					<tr>
 						<th>Id</th>
