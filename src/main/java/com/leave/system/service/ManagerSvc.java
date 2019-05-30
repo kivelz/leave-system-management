@@ -35,6 +35,8 @@ public class ManagerSvc {
 		this.managerId = managerId;
 		this.allLeave = (ArrayList<Leavedetail>) allLeave;
 		this.allEmployees = (ArrayList<Employee>) allEmployees;
+		subLeave = new ArrayList<>();
+		subordinates = new ArrayList<>();
 		
 		for (Employee e: allEmployees) {
 			
