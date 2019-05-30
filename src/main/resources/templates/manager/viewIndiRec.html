@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>view Roles</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+	<div class="container mt-5">
+		<table class="table table-striped">
+			<tr>
+				<th>Staff ID</th>
+				<th>Name</th>
+				<th>Balance Annual Leave</th>
+				<th>Balance Medical Leave</th>
+			</tr>
+			<tr>
+				<td th:text="${employee.id}"></td>
+				<td th:text="${employee.name}"></td>
+				<td th:text="${role.annualleave}"></td>
+				<td th:text="${role.medicalleave}"></td>
+			</tr>
+		</table>
+			<table class="table table-striped">
+				<tr>
+					<th>Leave ID</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Category</th>
+					<th>Reason</th>
+					<th>Contact Details</th>
+					<th>Status</th>
+					<th>Comment</th>
+				</tr>
+				<tr th:each="leaveDetail : ${empLeave}">
+					<td th:text="${leaveDetail.id}"></td>
+					<td
+						th:text="${#temporals.format(leaveDetail.startDate, 'dd-MM-yyyy')}"></td>
+					<td
+						th:text="${#temporals.format(leaveDetail.endDate, 'dd-MM-yyyy')}">Nil</td>
+					<td th:text="${leaveDetail.category}">Nil</td>
+					<td th:text="${leaveDetail.reason}">Nil</td>
+					<td th:text="${leaveDetail.contactDetail}"></td>
+					<td th:text="${leaveDetail.status}"></td>
+					<td th:text="${leaveDetail.comment}" /></td>
+				</tr>
+			</table>
+		<form th:action="@{/manager/subView}" method="get">
+			<input type="submit" value="Back" class="btn btn-primary" />
+		</form>
+		<br>
+	</div>
+
+</body>
+</html>

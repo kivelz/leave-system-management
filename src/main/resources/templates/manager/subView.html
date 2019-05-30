@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>view Roles</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-3">
+				<p class="lead">Manager Menu</p>
+				<div class="list-group">
+					<ul>
+						<li class="list-group-item"><a
+							th:href="@{'/manager/viewsubleave?managerId='+${id}}">Subordinates
+								Leave Applications</a></li>
+						<li class="list-group-item active"><a href="/manager/subView">View Subordinate Leave History</a></li>
+						<li class="list-group-item"><a href="/manager/findleave">Search
+								leave by date</a></li>
+						<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+
+					</ul>
+				</div>
+				</div>
+				<div class="col">
+					<div th:if="${#lists.isEmpty(subordinates)}">
+						<h3>No Records found</h3>
+					</div>
+					<div th:if="${not #lists.isEmpty(subordinates)}">
+						<h3>
+							<span th:text="${managername}"></span> Subordinates
+						</h3>
+						<hr>
+						<h4>Employee Leave Details</h4>
+						<br>
+						<br>
+						<div th:each="subordinate : ${subordinates}">
+							<h6 th:text="${subordinate.name} + '\'s leave details'" ></h6>
+							<table class="table table-striped">
+								<tr>
+									<th>Staff ID</th>
+									<th>Name</th>
+									<th>Details</th>
+								</tr>
+								<tr>
+									<td th:text="${subordinate.id}"></td>
+									<td th:text="${subordinate.name}"></td>
+									<td><a th:href="@{viewIndiRec(employeeId=${subordinate.id})}">
+												Click here</a></td>
+								</tr>
+							</table>
+							
+							<table th:if="${#lists.isEmpty(subordinates)}">
+								<h5>You have no subordinates assigned.</h5>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+</body>
+</html>
+

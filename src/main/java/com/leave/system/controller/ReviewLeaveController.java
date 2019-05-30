@@ -78,6 +78,35 @@ public class ReviewLeaveController {
 		return "redirect:/manager/";
 	}
 	
+	@RequestMapping(path="/subView", method = RequestMethod.GET)
+	public String ViewSubordinates(HttpSession session, Model model, RedirectAttributes redirectAttributes) { 
+		
+		UserSession userSession = (UserSession) session.getAttribute("US");
+		int managerId = userSession.getEmployee().getId();
+		
+		if(userSession.getEmployee().getRole().getId() == 2) {
+			
+			model.addAttribute("Leaverecords", new LeaveRecords());
+			String managername = userSession.getEmployee().getName();
+			
+			List<Employee> allEmployees = empRepo.findAll();
+			ArrayList<Employee> subordinates = new ArrayList<Employee>();
+			List<Leavedetail> allLeave = lvRepo.findAll();
+			
+			ManagerSvc mSvc = new ManagerSvc(managerId, allLeave, allEmployees);
+			subordinates = mSvc.getSubordinates();
+			
+			model.addAttribute("managername", managername);
+			model.addAttribute("subordinates", subordinates);
+			
+			return "manager/subView";
+		}
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+			return "redirect:/home/login";
+		
+	}
+	
 	@RequestMapping(path="/viewsubleave", method = RequestMethod.GET)
 	public String ViewApplications(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		
@@ -104,20 +133,24 @@ public class ReviewLeaveController {
 					for (Leavedetail l: allLeave) {
 						
 							if (l.getEmployee() == e) {
-								subLeave.add(l);
 
 								if(l.getStatus().equals("Approved")) {
 									
 									if (l.getCategory().equals("Annual Leave")) {
 										aConsumed++;
-									}
+										}
 									else if(l.getCategory().equals("Medical Leave")) {
 										mConsumed++;
-									}
+										}
 									
 								}
-									
+								
+								if (l.getStatus().equals("Applied/Updated")) {
+									subLeave.add(l);
+								}
+							
 							}
+							
 						}
 					
 					annualL = e.getRole().getAnnualleave();
@@ -141,6 +174,57 @@ public class ReviewLeaveController {
 			return "redirect:/home/login";
 	}
 	
+	@RequestMapping(path="/viewIndiRec", method = RequestMethod.GET)
+	public String IndiRec(@RequestParam Integer employeeId, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		UserSession us =(UserSession) session.getAttribute("US");
+		
+		int managerId = us.getEmployee().getId();
+		List<Employee> allEmployees = empRepo.findAll();
+		List<Leavedetail> allLeave = lvRepo.findAll();
+		
+		if(us.getEmployee().getRole().getId() == 2) {
+
+			ManagerSvc mSvc = new ManagerSvc(managerId, allLeave, allEmployees);
+			Employee emp = mSvc.getStaffbyId(employeeId);
+			ArrayList<Leavedetail> empLeave = mSvc.getSubLeave(emp);
+
+			int annualL = 0;
+			int medicalL = 0;
+			int aConsumed = 0;
+			int mConsumed = 0;
+
+			for (Leavedetail l: empLeave) {
+					
+					if(l.getStatus().equals("Approved")) {
+						
+						if (l.getCategory().equals("Annual Leave")) {
+							aConsumed = aConsumed + 1;
+						}
+						else if(l.getCategory().equals("Medical Leave")) {
+							mConsumed = mConsumed +1;
+						}
+					
+						annualL = emp.getRole().getAnnualleave();
+						medicalL = emp.getRole().getMedicalleave();
+						annualL = annualL - aConsumed;
+						medicalL = medicalL - mConsumed;
+					}
+			}
+			
+			Role role = emp.getRole();
+			role.setAnnualleave(annualL);
+			role.setMedicalleave(medicalL);
+			
+			model.addAttribute("role", role);
+			model.addAttribute("employee", emp);
+			model.addAttribute("empLeave", empLeave);
+			
+			return "manager/viewIndiRec";
+		}
+		redirectAttributes.addFlashAttribute("message", "You don't have authorization");
+		redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+		return "redirect:/home/login";
+	}
 	
 	
 	@RequestMapping(path="/viewIndiLeaveDetails", method = RequestMethod.GET)

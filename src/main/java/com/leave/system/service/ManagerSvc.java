@@ -184,7 +184,7 @@ public class ManagerSvc {
 		ArrayList<Leavedetail> leaveInRange = new ArrayList<>();
 		
 		for (Leavedetail l : subLeave) {
-			if(leave.overlaps(l) && l != leave) {
+			if(leave.overlaps(l) && l.getId() != leave.getId()) {
 				leaveInRange.add(l);
 			}
 		}
@@ -209,5 +209,25 @@ public class ManagerSvc {
 
 	public ArrayList<Leavedetail> getSubLeave() {
 		return subLeave;
+	}
+	
+	public ArrayList<Leavedetail> getSubLeave(Employee employee) {
+		ArrayList<Leavedetail> empLeave = new ArrayList<>();
+		for (Leavedetail l : subLeave) {
+			if(l.getEmployee() == employee) {
+				empLeave.add(l);
+			}
+		}
+		return empLeave;
+	}
+	
+	public Employee getStaffbyId(int Id) {
+		Employee emp = new Employee();
+		for (Employee e : subordinates) {
+			if(e.getId() == Id) {
+				emp = e;
+			}
+		}
+		return emp;
 	}
 }
