@@ -19,7 +19,7 @@
 	<div th:if="${message}" th:text="${message}"
 		th:class="${'alert ' + alertClass}" id="successMessage"
 		style="text-align: center" /></div>
-	<div class="container mt-5">
+	<div class="container mt-5" style="padding: 0 150px">
 
 		<div class="alert-danger" th:if="${error}" th:text="${error}"></div>
 
@@ -29,23 +29,34 @@
 			th:action="@{authenticate}" method="POST">
 
 			<div class="form-group">
-				<div class="col-sm-10">
+				<div class="col">
 					<input type="hidden" class="form-control" th:field="*{id}" />
 				</div>
 			</div>
-			<fieldset class="form-group col-md-4">
+			<fieldset class="form-group col">
 				<label for="name">Name :</label> <input class="form-control"
 					type="text" id="name" th:field=*{name}>
 			</fieldset>
 
-			<fieldset class="form-group col-md-4">
+			<fieldset class="form-group col">
 				<label for="password">Password :</label> <input class="form-control"
 					type="password" id="password" th:field=*{password}>
 			</fieldset>
 
-			<button class="btn btn-primary">Login</button>
+			<button class="btn btn-primary form-control">Login</button>
 		</form>
+		<br>
+		<hr>
+		<div>
+			<h5>To simplify things please use the follow login</h5>
+			<ul>
+				<li>User Id: HK1007 - Password: 1234567 - Role Admin</li>
+				<li>User Id: HK1001 - Password: 1234567 - Role Manager</li>
+				<li>User Id: HK1004 - Password: 1234567 - Role Staff</li>
+				</ul>
+		</div>
 	</div>
+
 
 	<script>
 		$(document).ready(function() {
