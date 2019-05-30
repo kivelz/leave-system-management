@@ -7,49 +7,70 @@
 <div th:if="${message}" th:text="${message}"
 	th:class="${'alert ' + alertClass}" id="successMessage"
 	style="text-align: center" /></div>
-<div class="container">
-	<h1>
-		Leave History for <span th:text=${username}></span>
-	</h1>
-	<table class="table table-striped">
-		<tr>
-			<th>Id</th>
-			<th>Start Date</th>
-			<th>End Date</th>
-			<th>Status</th>
-			<th>Modify</th>
-			<th></th>
-		</tr>
-		<tr th:each="hist : ${pending}">
-			<td th:text=${hist.id}></td>
-			<td th:text=${hist.startDate}></td>
-			<td th:text=${hist.endDate}></td>
-			<td th:text=${hist.status}></td>
-			<td><a th:href="${'leave/' + hist.id}"
-				class="btn btn-outline-primary">Edit</a> 
-				<a type="button" class="btn btn-danger" th:href="${'/staff/leave/delete/' + hist.id}">Delete</a>
-			</td>
-		</tr>
-	</table>
 
-	<table class="table table-striped">
-		<tr>
-			<th>Id</th>
-			<th>Start Date</th>
-			<th>End Date</th>
-			<th>Status</th>
-			<th>Reason</th>
-			<th>Comment</th>
-		</tr>
-		<tr th:each="hist : ${history}">
-			<td th:text=${hist.id}></td>
-			<td th:text=${hist.startDate}></td>
-			<td th:text=${hist.endDate}></td>
-			<td th:text=${hist.status}></td>
-			<td th:text=${hist.reason}></td>
-			<td th:text=${hist.comment}>No comment</td>
-		</tr>
-	</table>
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Admin Menu</p>
+			<div class="list-group">
+				<ul>
+					<li class="list-group-item"><a th:href="@{/staff/create}">Create
+							Leave</a></li>
+					<li class="list-group-item active">View History</li>
+					<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<div class="col">
+			<h5>
+				Leave History for <span th:text=${username}></span>
+			</h5>
+			<table class="table table-striped">
+				<tr>
+					<th>Id</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Status</th>
+					<th>Modify</th>
+					<th></th>
+				</tr>
+				<tr th:each="hist : ${pending}">
+					<td th:text=${hist.id}></td>
+					<td th:text=${hist.startDate}></td>
+					<td th:text=${hist.endDate}></td>
+					<td th:text=${hist.status}></td>
+					<td><a th:href="${'leave/' + hist.id}"
+						class="btn btn-outline-primary">Edit</a> <a type="button"
+						class="btn btn-danger"
+						th:href="${'/staff/leave/delete/' + hist.id}">Delete</a></td>
+				</tr>
+			</table>
+			<div th:if="${not #lists.isEmpty(history)}">
+				<table class="table table-striped">
+					<tr>
+						<th>Id</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Status</th>
+						<th>Reason</th>
+						<th>Comment</th>
+					</tr>
+					<tr th:each="hist : ${history}">
+						<td th:text=${hist.id}></td>
+						<td th:text=${hist.startDate}></td>
+						<td th:text=${hist.endDate}></td>
+						<td th:text=${hist.status}></td>
+						<td th:text=${hist.reason}></td>
+						<td th:text=${hist.comment}>No comment</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
 </div>
 
 </body>

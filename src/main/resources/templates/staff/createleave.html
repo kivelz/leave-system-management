@@ -4,48 +4,62 @@
 <title>All Employee</title>
 <th:block th:include="layout/header"></th:block>
 </head>
+<body>
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Admin Menu</p>
+			<div class="list-group">
+				<ul>
+					<li class="list-group-item active">Create Leave</li>
+					<li class="list-group-item"><a href="/staff/history">View
+							History</a></li>
 
-<div class="container m-5">
+				</ul>
+			</div>
+		</div>
+		<div class="col">
+			<h2>Apply Leave</h2>
+		<form class="form-horizontal" th:object="${leavedetail}"
+			th:action="@{create}" method="POST">
+			<input type="hidden" th:field=*{id}>
+			<div class="row">
+				<div class="form-group col">
+					<label for="category">Category</label> <select class="form-control"
+						th:field="*{category}">
+						<option value="Annual Leave">Annual Leave</option>
+						<option value="Medical Leave">Medical Leave</option>
+					</select>
+				</div>
+				<div class="form-group col">
+					<label for="start date">Start Date</label> <input
+						class="form-control" type="date" th:field=*{startDate} required>
+					<p th:if="${#fields.hasErrors('startDate')}"
+						th:errors="*{startDate}"></p>
+				</div>
 
-<h2>Apply Leave
-</h2>
-<form class="form-horizontal" th:object="${leavedetail}"
-	th:action="@{create}" method="POST">
-	<input type="hidden" th:field=*{id}>
+				<div class="form-group col">
+					<label for="start date">End Date</label> <input
+						class="form-control" type="date" th:field=*{endDate} required>
+					<p th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></p>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="contact detail">Contact Detail</label> <input
+					class="form-control" type="text" th:field=*{contactDetail}>
+			</div>
+			<div class="form-group">
+				<label for="reason">Reason</label> <input class="form-control"
+					type="text" th:field=*{reason}>
+			</div>
+			<input type="hidden" th:field=*{employee} th:value="${employee}">
+			<button>Submit</button>
+		</form>
+		</div>
 	
-
-	
-<div class="row">
-<div class="form-group col">
-		<label for="category">Category</label> <select   class="form-control" th:field="*{category}">
-			<option value="Annual Leave">Annual Leave</option>
-			<option value="Medical Leave">Medical Leave</option>
-		</select>
-	</div>
-<div class="form-group col">
-		<label for="start date">Start Date</label> <input class="form-control" type="date"
-			th:field=*{startDate} required>
-		<p th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" ></p>
 	</div>
 
-	<div class="form-group col">
-		<label for="start date">End Date</label> <input class="form-control" type="date"
-			th:field=*{endDate} required>
-		<p th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></p>
-	</div>
-</div>
-	
-<div class="form-group">
-		<label for="contact detail">Contact Detail</label> <input  class="form-control" type="text"
-			th:field=*{contactDetail}>
-	</div>
-	<div class="form-group">
-		<label for="reason">Reason</label> <input  class="form-control" type="text"
-			th:field=*{reason}>
-	</div>
-	<input type="hidden" th:field=*{employee} th:value="${employee}">
-	<button>Submit</button>
-</form>
 </div>
 
 
