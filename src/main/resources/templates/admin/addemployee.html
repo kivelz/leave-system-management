@@ -4,6 +4,9 @@
 <title>All Employee</title>
 <th:block th:include="layout/header"></th:block>
 </head>
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
 
 <div class="container mt-5">
 	<!-- start of container -->
@@ -56,7 +59,7 @@
 							<div class="col">
 								<fieldset class="form-group col">
 									<label for="password">Password :</label> <input
-										class="form-control" type="text" id="password"
+										class="form-control" type="password" id="password"
 										th:field="*{password}">
 									<p style="color: red" th:if="${#fields.hasErrors('password')}"
 										th:errors="*{password}">Name Error</p>

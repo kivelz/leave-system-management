@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -116,7 +117,7 @@ public class AdminController {
 
 	// post method for saving employee
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
-	public String saveEmployee(@Validated Employee employee, HttpSession session, BindingResult bindingResult,
+	public String saveEmployee(@Valid Employee employee,  BindingResult bindingResult, HttpSession session,
 			RedirectAttributes redirectAttributes, Model model) {
 		UserSession us = (UserSession) session.getAttribute("US");
 		if (us.getEmployee().getRole().getId() == 1) {
@@ -124,13 +125,7 @@ public class AdminController {
 			List<Role> roles = rRepo.findAll();
 			roleToFindRole.setId(1);
 			List<Employee> list = employeeRepository.findByRole(roleToFindRole);
-			Employee emp = employeeRepository.findByuserid(employee.getUserid());
-			redirectAttributes.addFlashAttribute("message", "Failed to add employee");
-			redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-			if (emp != null) {
-				bindingResult.rejectValue("userid", "error.user",
-						"There is already a employee registered with the username provided");
-			}
+			
 			if (bindingResult.hasErrors()) {
 
 				model.addAttribute("employee", employee);
