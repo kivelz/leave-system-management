@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+
 
 
 @Entity
@@ -16,13 +16,11 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
 	private String name;
-
 	private String userid;
 
 	private String password;
-
+	@Email
 	String email;
 	private Integer managerid;
 	@ManyToOne

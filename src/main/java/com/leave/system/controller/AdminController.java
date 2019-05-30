@@ -72,7 +72,7 @@ public class AdminController {
 		        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
 		            size = Integer.parseInt(request.getParameter("size"));
 		        }
-		        //
+		        
 		    Page<Employee> page2 =  employeeRepository.paginationFindAll(PageRequest.of(page, size));
 		    
 		       
@@ -85,7 +85,7 @@ public class AdminController {
 					employeesManagers.put(employee.getManagerid(), value.get());
 				}
 			}
-			//
+			
 			model.addAttribute("username", us.getEmployee().getName());
 			model.addAttribute("roles", rRepo.findAll());
 
@@ -125,7 +125,12 @@ public class AdminController {
 			List<Role> roles = rRepo.findAll();
 			roleToFindRole.setId(1);
 			List<Employee> list = employeeRepository.findByRole(roleToFindRole);
-			
+			Employee emp = employeeRepository.findByuserid(employee.getUserid());
+
+			if (emp !=null) {
+				bindingResult.rejectValue("userid", "error.userid",
+						"There is already a employee registered with the username provided");
+			}
 			if (bindingResult.hasErrors()) {
 
 				model.addAttribute("employee", employee);
