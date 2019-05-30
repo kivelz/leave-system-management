@@ -4,6 +4,9 @@
 <title>All Employee</title>
 <th:block th:include="layout/header"></th:block>
 </head>
+<div th:if="${message}" th:text="${message}"
+	th:class="${'alert ' + alertClass}" id="successMessage"
+	style="text-align: center" /></div>
 
 <div class="container mt-5">
 	<!-- start of container -->
@@ -17,6 +20,8 @@
 					<li class="list-group-item active">Add new employee</li>
 					<li class="list-group-item"><a href="/admin/role/list">View
 							Role</a></li>
+							<li class="list-group-item"><a href="/admin/employee/logout">logout</a></li>
+							
 				</ul>
 			</div>
 		</div>
@@ -56,7 +61,7 @@
 							<div class="col">
 								<fieldset class="form-group col">
 									<label for="password">Password :</label> <input
-										class="form-control" type="text" id="password"
+										class="form-control" type="password" id="password"
 										th:field="*{password}">
 									<p style="color: red" th:if="${#fields.hasErrors('password')}"
 										th:errors="*{password}">Name Error</p>
@@ -65,7 +70,7 @@
 							<div class="col">
 								<fieldset class="form-group col">
 									<label for="userid">User Id</label> <input class="form-control"
-										type="text" id="userid" th:field=*{userid}>
+										type="text" id="userid" th:field="*{userid}">
 								</fieldset>
 								<p style="color: red" th:if="${#fields.hasErrors('userid')}"
 									th:errors="*{userid}">Name Error</p>

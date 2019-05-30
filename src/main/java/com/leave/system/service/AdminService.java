@@ -40,22 +40,29 @@ public class AdminService implements AdminServiceIF {
 		eRepository.save(employee);
 	}
 	
+	@Override
+	@Transactional
 	public List<Employee> findByRole(Role role) {
 		role.setId(1);
 		List<Employee> list = eRepository.findByRole(role);		
 		return list;
 	}
 	
-	
+	@Override
+	@Transactional
 	public boolean createEmployee(Employee employee) {
 		eRepository.save(employee);
 		return true;
 	}
 	
+	@Override
+	@Transactional
 	public List<Employee> findAll() {
 		return eRepository.findAll();
 	}
 		
+	@Override
+	@Transactional
 	public Optional<Employee> findById(Integer id) {
 		return eRepository.findById(id);
 	}

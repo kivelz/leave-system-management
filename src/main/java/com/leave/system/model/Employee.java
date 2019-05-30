@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 
 
+
 @Entity
 public class Employee {
 
@@ -17,6 +18,7 @@ public class Employee {
 	private int id;
 	private String name;
 	private String userid;
+
 	private String password;
 	@Email
 	String email;
