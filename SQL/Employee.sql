@@ -43,7 +43,7 @@ INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `pa
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('5', 'worn5@company.com', '4','Worn Woe Wot', '12345678','worn5','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('6', 'wilhemina6@company.com', '4','Wilhemina Willyou', '12345678','wilhemina6','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('7', 'sysedmin@company.com', '8','Edison Da Edmin', '12345678','edmin','1');
-INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('8', 'ceo@company.com',null, 'Big Boss',  '12345678','SeeEeeOoo','2');
+INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('8', 'ceo@company.com','8', 'Big Boss',  '12345678','SeeEeeOoo','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('9', 'etan@company.com', '8','Esther Tan', '12345678','etan','2');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('10', 'yk@company.com', '9','Tan Yuen Kwan', '12345678','yuenkwan','3');
 INSERT INTO `leavemanagement`.`employee` (`id`,`email`, `managerid`, `name`, `password`, `userid`, `role_id`) VALUES ('11', 'tk@company.com', '9','Yuen Tan Kwan', '12345678','tankwan','3');
