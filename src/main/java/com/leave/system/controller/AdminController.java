@@ -73,10 +73,10 @@ public class AdminController {
 		            size = Integer.parseInt(request.getParameter("size"));
 		        }
 		        
-		    Page<Employee> page2 =  employeeRepository.paginationFindAll(PageRequest.of(page, size));
+		    Page<Employee> pg =  employeeRepository.paginationFindAll(PageRequest.of(page, size));
 		    
 		       
-			List<Employee> employees = page2.getContent();
+			List<Employee> employees = pg.getContent();
 			Map<Integer, Employee> employeesManagers = new HashMap<Integer, Employee>();
 			for (Employee employee : employees) {
 				Optional<Employee> value = employeeRepository.findEmployeeId(employee.getManagerid());
@@ -91,8 +91,8 @@ public class AdminController {
 
 			model.addAttribute("employees", employees);
 			model.addAttribute("employeesManagers", employeesManagers);
-			model.addAttribute("totalPages", page2.getTotalPages());
-			model.addAttribute("page", page2.getNumber());
+			model.addAttribute("totalPages", pg.getTotalPages());
+			model.addAttribute("page", pg.getNumber());
 			return 	"admin/index";
 		}
 	return "redirect:/home/login";
