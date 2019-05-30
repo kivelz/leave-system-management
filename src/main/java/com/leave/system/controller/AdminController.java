@@ -72,7 +72,7 @@ public class AdminController {
 		        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
 		            size = Integer.parseInt(request.getParameter("size"));
 		        }
-		        
+		        //
 		    Page<Employee> page2 =  employeeRepository.paginationFindAll(PageRequest.of(page, size));
 		    
 		       
