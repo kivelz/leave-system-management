@@ -78,9 +78,12 @@ public class ReviewLeaveController {
 		return "redirect:/manager/";
 	}
 	
-	@RequestMapping(path="/viewsubleave", params = "managerId" ,method = RequestMethod.GET)
-	public String ViewApplications(HttpSession session, @RequestParam("managerId") int managerId, Model model, RedirectAttributes redirectAttributes) {
+	@RequestMapping(path="/viewsubleave", method = RequestMethod.GET)
+	public String ViewApplications(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+		
 		UserSession userSession = (UserSession) session.getAttribute("US");
+		int managerId = userSession.getEmployee().getId();
+		
 		if(userSession.getEmployee().getRole().getId() == 2) {
 			model.addAttribute("Leaverecords", new LeaveRecords());
 			String managername = userSession.getEmployee().getName();
@@ -143,13 +146,16 @@ public class ReviewLeaveController {
 	@RequestMapping(path="/viewIndiLeaveDetails", method = RequestMethod.GET)
 	public String LeaveDetails(Integer leaveId, Model model, String message, HttpSession session, RedirectAttributes redirectAttributes) {
 		UserSession us =(UserSession) session.getAttribute("US");
+		
+		int managerId = us.getEmployee().getId();
+		List<Employee> allEmployees = empRepo.findAll();
+		List<Leavedetail> allLeave = lvRepo.findAll();
+		
 		if(us.getEmployee().getRole().getId() == 2) {
 			String msg = message;
 			
 			Leavedetail leave = lvRepo.findById(leaveId).orElse(null);
 			Employee subordinate = empRepo.findById(leave.getEmployee().getId()).get();
-			
-			List<Leavedetail> allLeave = lvRepo.findAll();
 
 			int annualL = 0;
 			int medicalL = 0;
@@ -176,14 +182,21 @@ public class ReviewLeaveController {
 				}
 			}
 			
+			ManagerSvc mSvc = new ManagerSvc(managerId, allLeave, allEmployees);
+			
+			ArrayList<Leavedetail> leaveinRange = mSvc.getOtherLeaveinRange(leave);
+			ArrayList<Employee> subordinates = mSvc.getEmpInLeaveRecs(leaveinRange);
+			
 			Role role = subordinate.getRole();
 			role.setAnnualleave(annualL);
 			role.setMedicalleave(medicalL);
 			
 			model.addAttribute("role", role);
 			model.addAttribute("subordinate", subordinate);
+			model.addAttribute("subordinates", subordinates);
 			model.addAttribute("leaveDetail", leave);
 			model.addAttribute("message", msg);
+			model.addAttribute("leaveinRange", leaveinRange);
 			
 			return "manager/individualLeaveDetails";
 		}
@@ -262,10 +275,16 @@ public class ReviewLeaveController {
 		String url = "/viewsubleave?managerId=" + subordinate.getManagerid();
 		
 		ManagerSvc mansvc = new ManagerSvc(leaveDetail.getEmployee().getManagerid(), allLeave, allEmployees);
-		ArrayList<Leavedetail> leaveinRange = mansvc.getLeaveinRange(leaveDetail);
+		ArrayList<Leavedetail> leaveinRange = mansvc.getOtherLeaveinRange(leaveDetail);
+		ArrayList<Employee> subordinates = mansvc.getEmpInLeaveRecs(leaveinRange);
 		
-		model.addAttribute("subordinate", subordinate);
+		role = subordinate.getRole();
+		role.setAnnualleave(annualL);
+		role.setMedicalleave(medicalL);
+		
 		model.addAttribute("role", role);
+		model.addAttribute("subordinate", subordinate);
+		model.addAttribute("subordinates", subordinates);
 		model.addAttribute("leaveinRange", leaveinRange);
 		model.addAttribute("leaveDetail", leaveDetail);
 		model.addAttribute("message", message);

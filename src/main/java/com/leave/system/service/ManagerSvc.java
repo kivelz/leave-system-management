@@ -179,17 +179,27 @@ public class ManagerSvc {
 	}
 	
 	
-	public ArrayList<Leavedetail> getLeaveinRange(Leavedetail leave) {
+	public ArrayList<Leavedetail> getOtherLeaveinRange(Leavedetail leave) {
 		
 		ArrayList<Leavedetail> leaveInRange = new ArrayList<>();
 		
 		for (Leavedetail l : subLeave) {
-			if(leave.overlaps(l)) {
+			if(leave.overlaps(l) && l != leave) {
 				leaveInRange.add(l);
 			}
 		}
 		
 		return leaveInRange;
+	}
+	
+	public ArrayList<Employee> getEmpInLeaveRecs(ArrayList<Leavedetail> leaveR) {
+		ArrayList<Employee> emps = new ArrayList<>();
+		
+		for(Leavedetail l: leaveR) {
+				emps.add(l.getEmployee());
+		}
+		
+		return emps;
 	}
 
 	public ArrayList<Employee> getSubordinates() {

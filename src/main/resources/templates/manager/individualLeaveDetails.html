@@ -72,26 +72,28 @@
 					class="btn btn-warning" type="reset" value="Reset" />
 			</p>
 		</form>
-
-
-
-
-		<p th:if="${message} != null" th:text="${message}"></p>
-		<h5>Leave Applications in same period</h5>
-
-		<p th:if="${leaveinRange} == null">No overlapping leave
-			applications for this leave application</p>
+		<form th:action="@{/manager/viewsubleave}" method="get">
+			<input type="submit" value="Back" class="btn btn-primary" />
+		</form>
+		<br>
+		<br>
+		<H6 th:if="${message} != null" th:text="${message}"></H6>
 	</div>
 
+	<div class="container mt-5">
+		<h5>Leave Applications in same period</h5>
 
-	<div th:if="${leaveinRange} != null"
+		<p th:if="${#lists.isEmpty(leaveinRange)}">No overlapping leave applications for this leave application period.</p>
+	</div>
+
+	<div class="container mt-5" th:if="${leaveinRange} != null"
 		th:each="subordinate : ${subordinates}">
 		<table class="table table-striped">
 			<tr>
-				<td>Staff ID</td>
-				<td>Name</td>
-				<td>Balance Annual Leave</td>
-				<td>Balance Medical Leave</td>
+				<th>Staff ID</th>
+				<th>Name</th>
+				<th>Balance Annual Leave</th>
+				<th>Balance Medical Leave</th>
 			</tr>
 			<tr>
 				<td th:text="${subordinate.id}"></td>
@@ -99,24 +101,21 @@
 				<td th:text="${subordinate.role.annualleave}"></td>
 				<td th:text="${subordinate.role.medicalleave}"></td>
 			</tr>
+		</table>
+		<table class="table table-striped">
 			<tr>
-			<tr>
-				<td>Leave ID</td>
-				<td>Start Date</td>
-				<td>End Date</td>
-				<td>Category</td>
-				<td>Status</td>
-				<td>Details</td>
+				<th>Leave ID</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Category</th>
+				<th>Status</th>
 				<!--	<td th:text="${itrStat.index}">test</td> -->
 			</tr>
 			<tr th:each="Leavedetail : ${leaveinRange}"
 				th:if="${subordinate.id} == ${Leavedetail.employee.id}">
-				<td th:text="${Leavedetail.id}"><input type="text"
-					th:field="*{Leavedetail.LeaveId}" readonly="readonly" /></td>
-				<td
-					th:text="${#temporals.format(Leavedetail.startDate, 'dd-MM-yyyy')}">Nil</td>
-				<td
-					th:text="${#temporals.format(Leavedetail.endDate, 'dd-MM-yyyy')}">Nil</td>
+				<td th:text="${Leavedetail.id}"></td>
+				<td th:text="${#temporals.format(Leavedetail.startDate, 'dd-MM-yyyy')}">Nil</td>
+				<td th:text="${#temporals.format(Leavedetail.endDate, 'dd-MM-yyyy')}">Nil</td>
 				<td th:text="${Leavedetail.category}">Nil</td>
 				<td th:text="${Leavedetail.status}"></td>
 			</tr>
