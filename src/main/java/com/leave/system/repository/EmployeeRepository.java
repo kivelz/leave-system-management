@@ -29,5 +29,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	@Query("SELECT DISTINCT m.name FROM Employee e, Employee m where e.managerid = m.id ")
 	ArrayList<String> findAllManagerNames();
 
-	
+	@Query("SELECT * FROM Employee e")
+	ArrayList<Employee> findAllEmployees();
 }

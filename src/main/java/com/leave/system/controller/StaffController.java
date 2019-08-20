@@ -168,5 +168,13 @@ public class StaffController {
 
 	// Finding Employee on leave on given period
 	
+	
+	public ArrayList<Employee> getAllStaff(int Id) {
+		ArrayList<Employee> emp = new ArrayList<>();
+		
+		emp = eRepo.findAllEmployees();
+		
+		return emp;
+	}
 
 }
